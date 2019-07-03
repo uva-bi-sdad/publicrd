@@ -1,0 +1,17 @@
+department_abb,agency_name,CFDA ,department_digits
+USDA, United States Department Of Agriculture,10.XXX,10
+DOD, Department Of Defense,12.XXX,12
+DOT, Department Of Transportation,20.XXX,20
+NASA, National Aeronautics And Space Administration,43.XXX,43
+NEA, National Endowment For The Arts,45.XXX,45
+NEH, National Endowment For The Humanities,45.XXX,45
+NSF,National Science Foundation,47.XXX,47
+SBA, Small Business Administration,59.XXX,59
+VA, Department Of Veterans Affairs,64.XXX,64
+EPA, Environmental Protection Agency,66.XXX,66
+NRC, Nuclear Regulatory Commission,77.XXX,77
+DOE, Department Of Energy,81.XXX,81
+ED, Department Of Education,84.XXX,84
+HHS, Department Of Health And Human Services,93.XXX,93
+SSA,Social Security Administration,96.XXX,96
+DHS, Department Of Homeland Security,97.XXX,97
