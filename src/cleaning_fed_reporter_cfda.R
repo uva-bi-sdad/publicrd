@@ -13,6 +13,7 @@ CFDA_glossary <- read_csv("glossary/CFDA_glossary_final.csv")
 #List of valid CFDA codes before fix:
 
 cfda_code_valid_before <- fed_reporter[which(grepl("[0-9]{2}\\.[0-9]{3}$", fed_reporter$CFDA_CODE) == TRUE), "CFDA_CODE"]
+cfda_code_threedigit <- fed_reporter[which(grepl("^[0-9]{3}$", fed_reporter$CFDA_CODE) == TRUE), "CFDA_CODE"]
 
 #Add Glossary to Main Table and specify relevant matching column:
 
