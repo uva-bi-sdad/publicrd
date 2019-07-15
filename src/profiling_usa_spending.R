@@ -47,7 +47,9 @@ usa_spending_transaction <- usa_spending_transaction %>% select(award_id_fain, m
 
 ##Creating Data Frame
 
-field_profile_usa_spending <- data.frame(field = as.character(colnames(usa_spending_transaction)), completeness = as.numeric(NA), validity = as.numeric(NA))
+field_profile_usa_spending <- data.frame(field = as.character(colnames(usa_spending_transaction)), 
+                                         completeness = as.numeric(NA), 
+                                         validity = as.numeric(NA))
 
 
 ##~~~~~~~~~~~~~~~~COMPLETENESS~~~~~~~~~~~~~~~~
@@ -79,7 +81,7 @@ field_profile_usa_spending$completeness <- apply(usa_spending_transaction, MARGI
 
 
 
-#output percentage of valid entries in column:
+#output valid_entries of valid entries in column:
 
 #Function to update field profile:
 
@@ -91,30 +93,49 @@ field_profile_usa_spending$completeness <- apply(usa_spending_transaction, MARGI
   
 #}
 
-#colnames(usa_spending_transaction)
+
 
 
 ##award_id_fain
 #hist(fain_length, breaks = 100)
 
-subagency_list <- usa_spending_transaction[match(unique(usa_spending_transaction$awarding_sub_agency_name), usa_spending_transaction$awarding_sub_agency_name),]
-subagency_list_final <- select(subagency_list, award_id_fain, modification_number, 
-                               awarding_agency_code, awarding_agency_name, 
-                               awarding_sub_agency_code, awarding_sub_agency_name,
-                               awarding_office_code, awarding_office_name)
+#subagency_list <- usa_spending_transaction[match(
+#unique(usa_spending_transaction$awarding_sub_agency_name), usa_spending_transaction$awarding_sub_agency_name),]
+#subagency_list_final <- select(subagency_list, award_id_fain, modification_number, 
+                               #awarding_agency_code, awarding_agency_name, 
+                               #awarding_sub_agency_code, awarding_sub_agency_name,
+                               #awarding_office_code, awarding_office_name)
 
-subagency_list_final <- subagency_list_final %>% arrange(awarding_agency_name)
+#subagency_list_final <- subagency_list_final %>% arrange(awarding_agency_name)
 
 ##modification_number
+
+v_modification_number <- function(database, column){
+  
+  valid_entries <- database[which(str_detect(database[[column]], "^[0-9A-Z]+$") == TRUE), column]
+  
+  percent_valid <- nrow(valid_entries)/nrow(database)*100
+  column_number <- match(column, colnames(database))
+  
+  field_profile_usa_spending[column_number, "validity"] <- percent_valid
+  
+  assign('field_profile_usa_spending', field_profile_usa_spending, envir=.GlobalEnv)
+  
+}
+
+v_modification_number(usa_spending_transaction, "modification_number")
 
 ##award_id_uri
 
 
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-##federal_action_obligation
+##federal_action_obligation & total_funding_amount & non_federal_funding_amount
 
-v_federal_action_obligation <- function(database, column){
+#Function covers all positive and negative numbers with or without decimals except for 0 or 1:
+
+v_funding_amount <- function(database, column){
   
   valid_entries <- database[which(str_detect(database[[column]], "^[0-1]$") == FALSE &
                                   str_detect(database[[column]], "^[0-9-]+?\\.?[0-9]+$") == TRUE |
@@ -130,9 +151,7 @@ v_federal_action_obligation <- function(database, column){
   
 }
 
-v_federal_action_obligation(usa_spending_transaction, "federal_action_obligation")
-
-##non_federal_funding_amount
+#Same as normal function but allows 0 or 1 as a valid response:
 
 v_non_federal_funding_amount <- function(database, column){
   
@@ -149,16 +168,20 @@ v_non_federal_funding_amount <- function(database, column){
   
 }
 
+v_funding_amount(usa_spending_transaction, "federal_action_obligation")
+v_funding_amount(usa_spending_transaction, "total_funding_amount")
 v_non_federal_funding_amount(usa_spending_transaction, "non_federal_funding_amount")
 
-##total_funding_amount
 
-v_total_funding_amount <- function(database, column){
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+##action_date & period_of_performance_start_date & period_of_performance_current_end_date
+
+#This date checker is function that accepts format for 20th and 21st century. The column action_date is limited to only 2015 and 2016
+
+v_date <- function(database, column){
   
-  valid_entries <- database[which(str_detect(database[[column]], "^[0-1]$") == FALSE &
-                                  str_detect(database[[column]], "^[0-9-]+?\\.?[0-9]+$") == TRUE |
-                                  str_detect(database[[column]], "^-[0-9-]+?\\.?[0-9]+$") == TRUE |
-                                  str_detect(database[[column]], "^[2-9-]$") == TRUE), column]
+  valid_entries <- database[which(str_detect(database[[column]], "^[1-2][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]") == TRUE), column]
   
   percent_valid <- nrow(valid_entries)/nrow(database)*100
   column_number <- match(column, colnames(database))
@@ -169,38 +192,32 @@ v_total_funding_amount <- function(database, column){
   
 }
 
-v_total_funding_amount(usa_spending_transaction, "total_funding_amount")
+v_action_date <- function(database, column){
+  
+  valid_entries <- database[which(str_detect(database[[column]], "^201[5-6]-[0-1][0-9]-[0-3][0-9]") == TRUE), column]
+  
+  percent_valid <- nrow(valid_entries)/nrow(database)*100
+  column_number <- match(column, colnames(database))
+  
+  field_profile_usa_spending[column_number, "validity"] <- percent_valid
+  
+  assign('field_profile_usa_spending', field_profile_usa_spending, envir=.GlobalEnv)
+  
+}
 
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-##action_date
-
-action_date_valid <- usa_spending_transaction[which(grepl("^201[5-6]-[0-1][0-9]-[0-3][0-9]", usa_spending_transaction$action_date) == TRUE), "action_date"]
-field_profile_usa_spending[7,"validity"] <- (nrow(action_date_valid)/nrow(usa_spending_transaction))*100
-
-##period_of_performance_start_date
-
-performance_start_date_valid <- usa_spending_transaction[which(
-  grepl("^[1-2][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]", usa_spending_transaction$period_of_performance_start_date) == TRUE), "period_of_performance_start_date"]
-
-field_profile_usa_spending[8,"validity"] <- (nrow(performance_start_date_valid)/nrow(usa_spending_transaction))*100
-
-##period_of_performance_current_end_date
-
-performance_end_date_valid <- usa_spending_transaction[which(
-  grepl("^[1-2][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]", usa_spending_transaction$period_of_performance_current_end_date) == TRUE), "period_of_performance_current_end_date"]
-
-field_profile_usa_spending[9,"validity"] <- (nrow(performance_end_date_valid)/nrow(usa_spending_transaction))*100
+v_action_date(usa_spending_transaction, "action_date")
+v_date(usa_spending_transaction, "period_of_performance_start_date")
+v_date(usa_spending_transaction, "period_of_performance_current_end_date")
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+##Formatting Fixes
 
 ##awarding_agency_code & awarding_agency_name
 
 #Use modified version of glossary_agency and isolate relevant columns from USAspending into separate frame_awarding_agency:
 
-glossary_awarding_agency <- glossary_agency %>% select(DEPARTMENT_ID, DEPARTMENT_NAME)
-glossary_awarding_agency <- unique(glossary_awarding_agency)
+glossary_awarding_agency <- unique(glossary_agency %>% select(DEPARTMENT_ID, DEPARTMENT_NAME))
 frame_awarding_agency <- usa_spending_transaction %>% select(awarding_agency_code, awarding_agency_name)
 
 #USA spending uses CGAC codes rather than Department IDs ("012" instead of "1200"), so we will modify the glossary to match:
@@ -251,6 +268,8 @@ field_profile_usa_spending[11,"validity"] <- (nrow(awarding_agency_name_valid)/n
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+##Function to test agency codes and names
 
 ##awarding_sub_agency_code & awarding_sub_agency_name
 
@@ -435,18 +454,33 @@ v_office_name(usa_spending_transaction, "funding_office_name")
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-##recipient_duns
+##recipient_duns & recipient_parent_duns
 
-recipient_duns_valid <- usa_spending_transaction[which(grepl("^[0-9]{9}$", usa_spending_transaction$recipient_duns) == TRUE), "recipient_duns"]
-field_profile_usa_spending[22,"validity"] <- (nrow(recipient_duns_valid)/nrow(usa_spending_transaction))*100
+#DUNS checker:
+
+v_duns_number <- function(database, column){
+  
+  valid_entries <- database[which(str_detect(database[[column]], "^[0-9]{9}$") == TRUE), column]
+  
+  percent_valid <- nrow(valid_entries)/nrow(database)*100
+  column_number <- match(column, colnames(database))
+  
+  field_profile_usa_spending[column_number, "validity"] <- percent_valid
+  
+  assign('field_profile_usa_spending', field_profile_usa_spending, envir=.GlobalEnv)
+  
+}
+
+v_duns_number(usa_spending_transaction, "recipient_duns")
+v_duns_number(usa_spending_transaction, "recipient_parent_duns")
+
 
 ##recipient_name
 
 recipient_name_length <- nchar(usa_spending_transaction$recipient_name)
 #Huge spike at ~45 chars, examine:
 recipient_name_long <- usa_spending_transaction[which(recipient_name_length >= 45), "recipient_name"]
-#~18000 names that are exactly that length. Some are valid, but vast majority are cut off
-#(e.g. "WESTERN KENTUCKY UNIVERSITY RESEARCH FOUNDATI")
+#~18000 names that are exactly that length. Some are valid, but vast majority are cut off (e.g. "WESTERN KENTUCKY UNIVERSITY RESEARCH FOUNDATI")
 #I'll mark these as invalid as a reminder for when we try to join these institutions to another database,
 #though it is still useful information.
 recipient_name_cut <- usa_spending_transaction[which(recipient_name_length == 45), "recipient_name"]
@@ -459,12 +493,6 @@ recipient_name_odd <- usa_spending_transaction[which(grepl("[^a-zA-Z. /(),&'360-
 recipient_name_invalid <- usa_spending_transaction[which(grepl("[^a-zA-Z. /(),&'360-]", usa_spending_transaction$recipient_name) == TRUE | 
                                                            recipient_name_length == 45), "recipient_name"]
 field_profile_usa_spending[23,"validity"] <- ((nrow(usa_spending_transaction)-nrow(recipient_name_invalid))/nrow(usa_spending_transaction))*100
-
-##recipient_parent_duns
-
-recipient_parent_duns_valid <- usa_spending_transaction[which(
-  grepl("^[0-9]{9}$", usa_spending_transaction$recipient_parent_duns) == TRUE), "recipient_parent_duns"]
-field_profile_usa_spending[24,"validity"] <- (nrow(recipient_parent_duns_valid)/nrow(usa_spending_transaction))*100
 
 ##recipient_parent_name
 
@@ -508,14 +536,51 @@ field_profile_usa_spending[26,"validity"] <- (nrow(recipient_country_code_valid)
 
 ##recipient_address_line_1
 
+#Start with number or P.O. box, then move onto letters
+
+v_address <- function(database, column){
+  
+  valid_entries <- database[which(str_detect(database[[column]], "^[0-9A-]+[ ][0-9a-zA-Z -\\.\\/;]+$") == TRUE |
+                                  str_detect(database[[column]], "^[O-P \\.]+BOX[ ][0-9]+") == TRUE |
+                                  str_detect(database[[column]], "^POST[ ]OFFICE[ ]BOX[ ][0-9]+") == TRUE |
+                                  str_detect(database[[column]], "^BOX[ ][0-9]+") == TRUE |
+                                  str_detect(database[[column]], "^CAMPUS[ ]BOX[ ][0-9]+") == TRUE), column]
+  
+  percent_valid <- nrow(valid_entries)/nrow(database)*100
+  column_number <- match(column, colnames(database))
+  
+  field_profile_usa_spending[column_number, "validity"] <- percent_valid
+  
+  assign('field_profile_usa_spending', field_profile_usa_spending, envir=.GlobalEnv)
+  
+}
+
+
+
+v_address(usa_spending_transaction, "recipient_address_line_1")
+v_address(usa_spending_transaction, "recipient_address_line_2")
+
+
 ##recipient_address_line_2
 
 ##recipient_city_code
 
 #FIPS codes. Must be a 5 digit number:
 
-recipient_city_code_valid <- usa_spending_transaction[which(grepl("^[0-9]{5}$", usa_spending_transaction$recipient_city_code) == TRUE), "recipient_city_code"]
-field_profile_usa_spending[30,"validity"] <- (nrow(recipient_city_code_valid)/nrow(usa_spending_transaction))*100
+v_city_code <- function(database, column){
+  
+  valid_entries <- database[which(str_detect(database[[column]], "^[0-9]{5}$") == TRUE), column]
+  
+  percent_valid <- nrow(valid_entries)/nrow(database)*100
+  column_number <- match(column, colnames(database))
+  
+  field_profile_usa_spending[column_number, "validity"] <- percent_valid
+  
+  assign('field_profile_usa_spending', field_profile_usa_spending, envir=.GlobalEnv)
+  
+}
+
+v_city_code(usa_spending_transaction, "recipient_city_code")
 
 ##recipient_city_name & primary_place_of_performance_city_name
 
@@ -581,7 +646,6 @@ frame_state$matches_zip_code <- check_zip_range(frame_state$three_digit_zip)
 recipient_zip_code_valid <- frame_state[which(frame_state$matches_zip_code == TRUE & is.na(frame_state$zip_code) == FALSE), "state_name"]
 field_profile_usa_spending[34,"validity"] <- (nrow(recipient_state_code_valid)/nrow(usa_spending_transaction))*100
 
-
 ##primary_place_of_performance_country_code & primary_place_of_performance_country_name
 
 glossary_country$country_name <- toupper(glossary_country$country_name)
@@ -620,9 +684,6 @@ v_primary_place_of_performance_code <- function(database, column){
 }
 
 v_primary_place_of_performance_code(usa_spending_transaction, "primary_place_of_performance_code")
-
-##primary_place_of_performance_city_name
-
 
 
 ##primary_place_of_performance_state_name & primary_place_of_performance_zip_4
@@ -663,47 +724,106 @@ primary_place_of_performance_zip_4_valid <- frame_state_performance[which(frame_
                                                                             is.na(frame_state_performance$zip_code) == FALSE), "state_name"]
 field_profile_usa_spending[40,"validity"] <- (nrow(primary_place_of_performance_zip_4_valid)/nrow(usa_spending_transaction))*100
 
-
 ##cfda_number
 
-cfda_number_valid <- usa_spending_transaction[which(usa_spending_transaction$cfda_number != 000 & usa_spending_transaction$cfda_number != 999 & 
-                                                      grepl("[0-9]{2}\\.[0-9]{3}$", usa_spending_transaction$cfda_number) == TRUE), "cfda_number"]
+v_cfda_number <- function(database, column){
+  
+  valid_entries <- database[which(database[[column]] != 000 & usa_spending_transaction[[column]] != 999 &
+                                    str_detect(database[[column]], "^[0-9]{2}\\.[0-9]{3}$") == TRUE), column]
+  
+  percent_valid <- nrow(valid_entries)/nrow(database)*100
+  column_number <- match(column, colnames(database))
+  
+  field_profile_usa_spending[column_number, "validity"] <- percent_valid
+  
+  assign('field_profile_usa_spending', field_profile_usa_spending, envir=.GlobalEnv)
+  
+}
 
-field_profile_usa_spending[41,"validity"] <- (nrow(cfda_number_valid)/nrow(usa_spending_transaction))*100
+v_cfda_number(usa_spending_transaction, "cfda_number")
 
-cfda_number_invalid <- usa_spending_transaction[which(usa_spending_transaction$cfda_number == 000 | usa_spending_transaction$cfda_number == 999 | 
-                                                        grepl("[0-9]{2}\\.[0-9]{3}$", usa_spending_transaction$cfda_number) == FALSE), "cfda_number"]
+#cfda_number_invalid <- usa_spending_transaction[which(
+   #usa_spending_transaction$cfda_number == 000 | usa_spending_transaction$cfda_number == 999 | 
+   #grepl("[0-9]{2}\\.[0-9]{3}$", usa_spending_transaction$cfda_number) == FALSE), "cfda_number"]
+
 
 ##cfda_title
 
+v_cfda_title <- function(database, column){
+  
+  valid_entries <- database[which(str_detect(database[[column]], "^[0-9a-zA-Z -\\. \\(\\)]+$") == TRUE), column]
+  
+  percent_valid <- nrow(valid_entries)/nrow(database)*100
+  column_number <- match(column, colnames(database))
+  
+  field_profile_usa_spending[column_number, "validity"] <- percent_valid
+  
+  assign('field_profile_usa_spending', field_profile_usa_spending, envir=.GlobalEnv)
+  
+}
 
+v_cfda_title(usa_spending_transaction, "cfda_title")
 
 ##assistance_type_code
-#02 Block Grant
-#03 Formula Grant
-#04 Project Grant
-#05 Cooperative Agreement
 
-assistance_type_code_valid <- usa_spending_transaction[which(grepl("^[0]{1}[2-5]{1}$", usa_spending_transaction$assistance_type_code) == TRUE), "assistance_type_code"]
-field_profile_usa_spending[43,"validity"] <- (nrow(assistance_type_code_valid)/nrow(usa_spending_transaction))*100
+#02 Block Grant, 03 Formula Grant, 04 Project Grant, 05 Cooperative Agreement
 
-#assistance_type_description
+v_assistance_type_code <- function(database, column){
+  
+  valid_entries <- database[which(str_detect(database[[column]], "^[0]{1}[2-5]{1}$") == TRUE), column]
+  
+  percent_valid <- nrow(valid_entries)/nrow(database)*100
+  column_number <- match(column, colnames(database))
+  
+  field_profile_usa_spending[column_number, "validity"] <- percent_valid
+  
+  assign('field_profile_usa_spending', field_profile_usa_spending, envir=.GlobalEnv)
+  
+}
 
+v_assistance_type_code(usa_spending_transaction, "assistance_type_code")
+
+##assistance_type_description
 #Only three different entries here, all are valid.
 
 field_profile_usa_spending[44,"validity"] <- field_profile_usa_spending[44,"completeness"]
 
 ##award_description
 
+v_description <- function(database, column){
+  
+  valid_entries <- database[which(str_detect(database[[column]], "^[a-zA-Z -\\.:\\,]+$") == TRUE), column]
+  
+  percent_valid <- nrow(valid_entries)/nrow(database)*100
+  column_number <- match(column, colnames(database))
+  
+  field_profile_usa_spending[column_number, "validity"] <- percent_valid
+  
+  assign('field_profile_usa_spending', field_profile_usa_spending, envir=.GlobalEnv)
+  
+}
 
+v_description(usa_spending_transaction, "award_description")
 
 ##record_type_code
 #Record type may be ‘Individual’ or ‘Aggregate’. Aggregate reporting is for payments to individuals identifiable by a geographical unit. 
 #Individual reporting consists of “action-by-action” transactions. Aggregate is marked as 1. Individual is marked as 2.
 #Because we are looking at transactions, all of these should be equal to 2:
 
-record_type_code_valid <- usa_spending_transaction[which(grepl("^[2]{1}$", usa_spending_transaction$record_type_code) == TRUE), "record_type_code"]
-field_profile_usa_spending[46,"validity"] <- (nrow(record_type_code_valid)/nrow(usa_spending_transaction))*100
+v_record_type_code <- function(database, column){
+  
+  valid_entries <- database[which(str_detect(database[[column]], "^[2]{1}$") == TRUE), column]
+  
+  percent_valid <- nrow(valid_entries)/nrow(database)*100
+  column_number <- match(column, colnames(database))
+  
+  field_profile_usa_spending[column_number, "validity"] <- percent_valid
+  
+  assign('field_profile_usa_spending', field_profile_usa_spending, envir=.GlobalEnv)
+  
+}
+
+v_record_type_code(usa_spending_transaction, "record_type_code")
 
 ##record_type_description
 
@@ -713,9 +833,20 @@ field_profile_usa_spending[47,"validity"] <- field_profile_usa_spending[47,"comp
 
 ##last_modified_date
 
-last_modified_date_valid <- usa_spending_transaction[which(grepl("^[1-2][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]", 
-                                                                 usa_spending_transaction$last_modified_date) == TRUE), "last_modified_date"]
+v_last_modified_date <- function(database, column){
 
-field_profile_usa_spending[48,"validity"] <- (nrow(last_modified_date_valid)/nrow(usa_spending_transaction))*100
+  valid_entries <- database[which(str_detect(database[[column]], "^[1-2][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9][ ][0-9]{2}:[0-9]{2}:[0-9]{2}") == TRUE), column]
+  
+  percent_valid <- nrow(valid_entries)/nrow(database)*100
+  column_number <- match(column, colnames(database))
+  
+  field_profile_usa_spending[column_number, "validity"] <- percent_valid
+  
+  assign('field_profile_usa_spending', field_profile_usa_spending, envir=.GlobalEnv)
+  
+}
+
+v_last_modified_date(usa_spending_transaction, "last_modified_date")
 
 
+write_csv(field_profile_usa_spending, 'field_profile_usa_spending.csv')
