@@ -4,7 +4,7 @@ library(data.table)
 library(lubridate)
 
 loc <- file.path("data/original")
-USAspend <- fread(file.path(loc, "2016-data_multiple_usa-spending_transaction_prime.csv"))
+USAspend <- fread(file.path(loc, "2016-data_multiple_usa-spending_transaction_prime_grants-only.csv"))
 USAspend_prime <- fread(file.path(loc, "2016-data_multiple_usa-spending-prime-awards.csv"))
 
 
@@ -211,3 +211,65 @@ sum(filter(USA_nasa_project, period_of_performance_start_date < as.Date("2016-10
            period_of_performance_start_date >= as.Date("2013-10-01"))$in_fed_16_15_14)/
             nrow(filter(USA_nasa_project, period_of_performance_start_date < as.Date("2016-10-01"), 
             period_of_performance_start_date >= as.Date("2013-10-01")))
+
+
+###what's up with DOD
+usa_grant_dod <- filter(USAgrant, awarding_agency_name == "DEPARTMENT OF DEFENSE (DOD)")
+fed_grant_dod <- filter(fed_2016, DEPARTMENT == "DOD")
+
+table(nchar(usa_grant_dod$award_id_fain))
+table(nchar(fed_grant_dod$PROJECT_NUMBER))
+table(nchar(usa_grant_dod$PROJECT_ID))
+
+usa_grant_dod_16 <- filter(usa_grant_dod, period_of_performance_start_date < as.Date("2016-10-01"), period_of_performance_start_date >= as.Date("2015-09-30"))
+
+#what agencies are covered in fedreporter/usaspending? 
+#in fedreporter it's mostly CDMRP: congressionally directed medical research programs
+
+fed_grant_dod %>% group_by(AGENCY) %>% summarise(count = n()) %>% arrange(desc(count))
+usa_grant_dod_16 %>% group_by(awarding_sub_agency_name) %>% summarise(count = n()) %>% arrange(desc(count))
+
+#found some projects that are in both, but no easy tie between them.
+#fed reporter project number NT160002 is usaspending award_id_fain HU00011620033
+
+loc <- file.path("data/working")
+usa_contract <- fread(file.path(loc, "2016-data_multiple_usa-spending_transaction_prime_contracts-only_select-fields.csv"))
+usa_contract <- usa_contract[,2:67]
+
+usa_contract_dod <- filter(usa_contract, awarding_agency_name == "DEPARTMENT OF DEFENSE (DOD)")
+usa_contract_dod %>% group_by(product_or_service_code_description) %>% summarise(count = n()) %>%arrange(desc(count))
+
+View(usa_contract %>% filter(awarding_agency_name %in% c("DEPARTMENT OF DEFENSE (DOD)", "DEPARTMENT OF AGRICULTURE (USDA)",
+          "DEPARTMENT OF ENERGY (DOE)", "NATIONAL SCIENCE FOUNDATION (NSF)", 	"NATIONAL AERONAUTICS AND SPACE ADMINISTRATION (NASA)") | awarding_sub_agency_name == "NATIONAL INSTITUTES OF HEALTH") %>% 
+          mutate(length = nchar(award_id_piid)) %>% group_by(awarding_agency_name, length) %>% summarise(count = n()))
+
+View(usa_contract_dod %>% mutate(length = nchar(award_id_piid)) %>% group_by(awarding_sub_agency_name, length) %>% 
+  summarise(count = n()))
+
+###returning to NIH
+usa_grant_nih <- filter(USAgrant, awarding_sub_agency_name == "NATIONAL INSTITUTES OF HEALTH")
+table(nchar(usa_grant_nih$award_id_fain))
+fed_grant_nih <- filter(fed_2016, AGENCY == "NIH")
+fed_grant_nih %>% mutate(characters = nchar(PROJECT_NUMBER)) %>% group_by(awarding_agency_name, nchar) %>% summarise(count = n()) %>% arrange(desc(count))
+
+##choosing substring 2-12 captures 80% and 90% of fedreporter data in a single year of usaspending data, for 15 and 22 character IDs respectively
+fed_grant_nih_15char <- filter(fed_grant_nih, nchar(PROJECT_NUMBER) == 15)
+fed_grant_nih_15char <- mutate(fed_grant_nih_15char, USAid = substr(PROJECT_NUMBER, 2, 12))
+sum(fed_grant_nih_15char$USAid %in% usa_grant_nih$award_id_fain)/nrow(fed_grant_nih_15char)
+
+fed_grant_nih_22char <- filter(fed_grant_nih, nchar(PROJECT_NUMBER) == 22)
+fed_grant_nih_22char <- mutate(fed_grant_nih_22char, USAid = substr(PROJECT_NUMBER, 2, 12))
+sum(fed_grant_nih_22char$USAid %in% usa_grant_nih$award_id_fain)/nrow(fed_grant_nih_22char)
+
+fed_grant_nih_17char <- filter(fed_grant_nih, nchar(PROJECT_NUMBER) == 17)
+fed_grant_nih_17char <- mutate(fed_grant_nih_17char, USAid = substr(PROJECT_NUMBER, 2, 12))
+sum(fed_grant_nih_17char$USAid %in% usa_grant_nih$award_id_fain)/nrow(fed_grant_nih_17char)
+
+fed_grant_nih <- mutate(fed_grant_nih, USAid = substr(PROJECT_NUMBER, 2, 12))
+sum(fed_grant_nih$USAid %in% usa_grant_nih$award_id_fain)/nrow(fed_grant_nih)
+
+usa_contract_nih <- filter(usa_contract, awarding_sub_agency_name == "NATIONAL INSTITUTES OF HEALTH")
+sum(fed_grant_nih$USAid %in% usa_contract_nih$award_id_piid)/nrow(fed_grant_nih)
+
+usa_contract_nih$award_id_piid[1:10]
+#no match in contract piids--looks entirely different

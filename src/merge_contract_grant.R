@@ -32,7 +32,7 @@ paste(as.character(contract_only_cols),collapse=", ",sep="")
 ##I went and decided what fields might be relevant; now narrowing down that
 ##massive contracts file to just what we might care about:
 
-contract_col_keep <- c(shared_cols, "federally_funded_research_and_development_corp",
+contract_col_keep <- c(shared_cols, "award_id_piid", "federally_funded_research_and_development_corp",
                        "educational_institution", "organizational_type", "cage_code", "product_or_service_code",
                        "product_or_service_code_description", "dod_claimant_program_code", "dod_claimant_program_description",
                        "naics_code", "naics_description", "dod_acquisition_program_code", 
@@ -45,4 +45,65 @@ contract_col_keep <- c(shared_cols, "federally_funded_research_and_development_c
                        "veterinary_college")
 
 prime_contract_trim <- select(prime_contract, contract_col_keep)
+
+###writing this out
+loc <- file.path("data/working")
+write.csv(prime_contract_trim, file.path(loc, "2016-data_multiple_usa-spending_transaction_prime_contracts-only_select-fields.csv"))
+
+###how much contract money comes from our six agencies?
+
+usa_contract_6ag <- filter(prime_contract_trim, awarding_agency_name %in% c("DEPARTMENT OF DEFENSE (DOD)", "DEPARTMENT OF ENERGY (DOE)",
+   "NATIONAL AERONAUTICS AND SPACE ADMINISTRATION (NASA)", "DEPARTMENT OF AGRICULTURE (USDA)", 
+   "NATIONAL SCIENCE FOUNDATION (NSF)") | awarding_sub_agency_name == "NATIONAL INSTITUTES OF HEALTH")
+
+ggplot(usa_contract_6ag) + geom_bar(aes(x = awarding_agency_name, y = federal_action_obligation), stat = "sum")
+
+usa_contract_6ag %>% group_by(awarding_agency_name) %>% summarise(count = n(), 
+  total = sum(federal_action_obligation)) %>% arrange(desc(total)) %>% ggplot()+
+  geom_col(aes(x=awarding_agency_name, y=total))+coord_flip()
+
+usa_contract_6ag %>% group_by(awarding_agency_name) %>% summarise(count = n(), 
+  total = sum(federal_action_obligation)) %>% arrange(desc(total)) %>% ggplot()+
+  geom_col(aes(x=awarding_agency_name, y=count))+coord_flip()
+
+usa_grant_6ag <- filter(prime_grant, awarding_agency_name %in% c("DEPARTMENT OF DEFENSE (DOD)", 
+               "DEPARTMENT OF ENERGY (DOE)", "NATIONAL AERONAUTICS AND SPACE ADMINISTRATION (NASA)", 
+               "DEPARTMENT OF AGRICULTURE (USDA)", "NATIONAL SCIENCE FOUNDATION (NSF)") | 
+                 awarding_sub_agency_name == "NATIONAL INSTITUTES OF HEALTH")
+
+usa_c_s_6ag <- usa_contract_6ag %>% group_by(awarding_agency_name) %>% summarise(count = n(), 
+  total = sum(federal_action_obligation), count = n())
+usa_c_s_6ag$type <- "contract"
+
+usa_g_s_6ag <- usa_grant_6ag %>% group_by(awarding_agency_name) %>% summarise(count = n(), 
+     total = sum(federal_action_obligation), count = n())
+usa_g_s_6ag$type <- "grant"
+
+
+usa_6ag_sum <- rbind(usa_c_s_6ag, usa_g_s_6ag)
+ggplot(usa_6ag_sum)+geom_bar(aes(x=awarding_agency_name, y=count), stat = "sum") + coord_flip()
+ggplot(usa_6ag_sum)+geom_bar(aes(x=awarding_agency_name, y=total), stat = "sum") + coord_flip()
+
+ggplot(usa_6ag_sum)+geom_bar(aes(x=awarding_agency_name, y=count, fill = type), stat = "sum", 
+                             position = "fill") + coord_flip()+
+                              ggtitle("Count of grants and contracts as proportion of all obligations")
+ggplot(usa_6ag_sum)+geom_bar(aes(x=awarding_agency_name, y=total, fill = type), stat = "sum", 
+                             position = "fill") + coord_flip() + 
+                            ggtitle("Total amount of grants and contracts as proportion of all obligations")
+
+sum(usa_6ag_sum[usa_6ag_sum$awarding_agency_name == "NATIONAL AERONAUTICS AND SPACE ADMINISTRATION (NASA)","total"])
+
+###investigating that research field in the contracts data--not very useful, only marks 3 specific kinds of research
+sum(is.na(usa_contract_6ag$research))/nrow(usa_contract_6ag$research)
+table(usa_contract_6ag$research_code)
+###investigating "product and service code" fields
+##this could be REALLY USEFUL: 
+product_service <- usa_contract_6ag %>% group_by(awarding_agency_name, product_or_service_code, product_or_service_code_description) %>%
+  summarise(count = n()) %>% arrange(desc(count))
+
+product_service_nsf <- usa_contract_6ag %>% filter(awarding_agency_name == "NATIONAL SCIENCE FOUNDATION (NSF)") %>% group_by(product_or_service_code, product_or_service_code_description) %>%
+  summarise(count = n()) %>% arrange(desc(count))
+
+product_service_nasa <- usa_contract_6ag %>% filter(awarding_agency_name == "NATIONAL AERONAUTICS AND SPACE ADMINISTRATION (NASA)") %>% group_by(product_or_service_code, product_or_service_code_description) %>%
+  summarise(count = n()) %>% arrange(desc(count))
 
