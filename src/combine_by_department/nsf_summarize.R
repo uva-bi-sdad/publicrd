@@ -28,3 +28,5 @@ nsf_grant_summary[1,"obligation_total"] <- sum(nsf_grant$federal_action_obligati
 nsf_grant_summary[1,"res_obligation_total"] <- sum(filter(nsf_grant, resflag == TRUE)$federal_action_obligation)
 
 nsf_summary <- rbind(nsf_contract_summary, nsf_grant_summary)
+
+write.csv(nsf_summary, file.path(loc, "nsf_summary.csv"))
