@@ -1,3 +1,4 @@
+library(dplyr)
 library(data.table)
 library(tidyverse)
 library(ggmosaic)
@@ -49,8 +50,11 @@ ggplot(filter(res_non_res, agency == "NSF")) + geom_mosaic(aes(x = product(type,
 nasa_tot <- 1167286100+287455200
 sum(nasa_summary$res_obligation_total)/nasa_tot
 
+nasa_grant <- fread(file.path(loc_nasa, "nasa_usa-spending_grants_2016_matchflag.csv"))
 nasa_grant <- nasa_grant[,3:76]
 ggplot(nasa_grant)+geom_beeswarm(aes(x=1, y=1, size = federal_action_obligation))
+
+nasa_contract <- fread(file.path(loc_nasa, "nasa_usa-spending_contracts_2016_resflag.csv"))
 
 nasa_grant_short <- select(nasa_grant, award_id_fain, federal_action_obligation, resflag)
 nasa_grant_short$fundtype <- "grant"
