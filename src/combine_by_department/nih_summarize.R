@@ -16,7 +16,7 @@ nih_contract_summary[1,"res_obligation_total"] <- sum(filter(nih_contract, resfl
 
 nih_grant <- fread(file.path(loc, "nih_usa-spending_grants_2016_matchflag.csv"))
 #only run this if there are V1 column(s):
-nih_grant <- nih_grant[,3:78]
+#nih_grant <- nih_grant[,3:78]
 nih_grant_summary <- data.frame(agency = "NIH", type = "grant", transaction_count = NA, res_transaction_count = NA, award_count = NA, 
                                    res_award_count = NA, obligation_total = NA, res_obligation_total = NA)
 
@@ -28,5 +28,3 @@ nih_grant_summary[1,"obligation_total"] <- sum(nih_grant$federal_action_obligati
 nih_grant_summary[1,"res_obligation_total"] <- sum(filter(nih_grant, resflag == TRUE)$federal_action_obligation)
 
 nih_summary <- rbind(nih_contract_summary, nih_grant_summary)
-
-write.csv(nih_summary, file.path(loc, "nih_summary.csv"))
