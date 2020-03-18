@@ -63,7 +63,11 @@ def remove_short_abstracts(df, limit):
     # Remove abstracts with length < limit. 150 seems like a good cutoff, but it does lose some useful information.
     
     df['nchar']=df['working_abstract'].apply(len)
+    l1 = len(df)
     df=df.loc[df['nchar']>=limit]
+    l2 = len(df)
+    
+    print(l1-l2, "short abstracts removed")
     
     return df
 
@@ -95,50 +99,24 @@ def remove_phrase(x, phrase,loc='Start'):
 
 def remove_junk_start(df, col, start_phrases):
     
-    # Removes junk phrases from the start of abstracts.  Abstracts are contained in df[col]
+    # Removes junk phrases from the start of abstracts. Abstracts are contained in df[col]
 
     # strip symbols from start
-    df[col]=df[col].apply(str.lstrip,args=[' ?-_^. :,!;¿|()[]#%>﻿&\''])
+    df[col]=df[col].apply(str.lstrip,args=['?-_^. :,!;¿|]#%>&'])
 
     # Remove found phrases
     for phrase in start_phrases:
         print(phrase)
-        df[col]=df[col].apply(remove_phrase,args=[phrase,'Start']).apply(str.lstrip,args=[' :./)'])
-        
-    #Repeated in case the order of project summary/abstract varies
-    for phrase in start_phrases:
-        df[col]=df[col].apply(remove_phrase,args=[phrase,'Start']).apply(str.lstrip,args=[' :./)'])
+        df[col]=df[col].apply(remove_phrase,args=[phrase,'Start']).apply(str.lstrip,args=[' :'])
         
     # drop empty abstracts 
     df.drop(df[df[col].apply(len)==0].index,axis=0,inplace=True)
-    
-    # Often sentences will start with - or *, but they indicate other quality issues & don't end with them,
-    # so it's okay to remove them
-    df[col]=df[col].apply(str.lstrip,args=['?-*_^. :,!;=¿|]#%>&-\t\n']) 
     
     # update Start Char column in df
     df['Start Char']=df[col].apply(lambda x: x[0])
     
     return df
 
-
-def remove_junk_middle(df, col):
-
-    # Removal of "junk" found in text body, not at the start or end.  Uses regular expressions.
-    # Abstracts in df[col]
-    
-    expression=re.compile('Enter the text here that.*lines of text')
-    df[col]=df[col].apply(lambda x: re.sub(expression,'',x))
-
-    expression=re.compile('PHS .*?Continuation Format Page')
-    df[col]=df[col].apply(lambda x: re.sub(expression,'',x))
-    expression=re.compile('OMB No .*?Continuation Format Page')
-    df[col]=df[col].apply(lambda x: re.sub(expression,'',x))
-
-    df[col]=df[col].replace('Project Summary/Abstract','')
-        
-    
-    return df
 
 
 def remove_junk_end(df, col, end_phrases):
