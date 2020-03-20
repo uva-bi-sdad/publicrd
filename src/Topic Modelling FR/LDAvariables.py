@@ -12,7 +12,7 @@ def createLDAvars(docs):
     id2word.filter_extremes(no_below=3, no_above=0.4, keep_n=keep_only_most_common)
 
 
-    # Creat Corpus (Term Document Frequency)
+    # Create Corpus (Term Document Frequency)
 
     #Creates a count for each unique word appearing in the document, where the word_id is substituted for the word
     corpus = [id2word.doc2bow(doc) for doc in docs]
