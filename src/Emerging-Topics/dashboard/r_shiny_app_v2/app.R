@@ -54,7 +54,7 @@ shinyApp(
     title = "DashboardPage",
     header = dashboardHeaderPlus(
       title = "DSPG 2020",
-      left_menu = tagList(div("RND ABSTRACTS: EMERGING TOPIC IDENTIFICATION", style="height:35px; display:flex; align-items: center; color: silver;"))
+      left_menu = tagList(div("R&D ABSTRACTS: EMERGING TOPIC IDENTIFICATION", style="height:35px; display:flex; align-items: center; color: silver;"))
 
       ),
 
