@@ -11,11 +11,19 @@ library(ggplot2)
 library(leaflet)
 library(DT)
 
+#
+# DATA INGESTION -------------------------------------------------------
+#
 
 # USAspending - NSF FY18 grants
 nsf_g18 <- read_rds("usa_nsf_fy18.rds")
 
 VA_SnE <- read_rds("VA_SnE.rds")
+
+
+#
+# DATA TRANSFORMATIONS ---------------------------------------------------------
+#
 
 # convert to wide data for plots
 
@@ -50,31 +58,51 @@ VA_SnE[!is.na(VA_SnE$pct_diff) & abs(VA_SnE$pct_diff) < 10, "rad"] <- 6
 VA_SnE[!is.na(VA_SnE$pct_diff) & abs(VA_SnE$pct_diff) > 10 & abs(VA_SnE$pct_diff) < 25, "rad"] <- 8
 VA_SnE[!is.na(VA_SnE$pct_diff) & abs(VA_SnE$pct_diff) > 25, "rad"] <- 14
 
+
 #
 # USER INTERFACE ----------------------------------------------------------------------------------------------------
 #
 
 ui <- dashboardPage(
   title = "VA Case Study",
-  header = dashboardHeader(
+  header = dashboardHeaderPlus(
     title = "VA Case Study - NSF FY18 S&E Grants",
     titleWidth = 400
   ),
   sidebar = dashboardSidebar(width = "0px"),
   body = dashboardBody(
     
+    # https://stackoverflow.com/questions/60895511/remove-icon-which-displays-or-hides-the-left-sidebar-in-shinydashboard-for-a-cer
+    tags$script("document.getElementsByClassName('sidebar-toggle')[0].style.visibility = 'hidden';"),
+    
     fluidRow(
       
-      boxPlus(
-        title = "Virginia Colleges and Universities listed in FSS, table 13",
+      column(
         width = 8,
-        leafletOutput("VA_schools")
+        
+        boxPlus(
+          title = "Virginia Colleges and Universities listed in FSS, table 13",
+          width = 12,
+          leafletOutput("VA_schools")
+        )
       ),
       
-      boxPlus(
-        title = "S&E: FSS vs USAspending",
+      column(
         width = 4,
-        plotOutput("sne_dollars")
+        
+        boxPlus(
+          title = "Choose an Institution",
+          width = 12,
+          selectInput(inputId = "which_school", label = "", 
+                      choices=VA_SnE$fss_institution[sort.list(VA_SnE$fss_institution)])
+        ),
+        
+        boxPlus(
+          title = "S&E: FSS vs USAspending",
+          width = 12,
+          height = 375,
+          plotOutput("sne_dollars", height = "300px")
+        )
       )
     ),
     
@@ -103,7 +131,12 @@ server <- function(input, output, session) {
   #   print(click)
   # })
   
+  # reactive data filter for chosen institution
   
+  chosen_school <- reactive({
+    VA_SnE %>% 
+      filter(fss_institution == input$which_school)
+  })
   
   # leaflet map for VA universities and colleges ----------------------------
   
@@ -117,13 +150,27 @@ server <- function(input, output, session) {
             VA_SnE$usa_recipient_name,
             "<br />",
             "<strong>Relative Percent Difference: </strong>",
-            round(VA_SnE$pct_diff,2)
+            paste0(round(VA_SnE$pct_diff,2), "%")
             ),
+      htmltools::HTML
+    )
+    
+    chosen_school_label <- lapply(
+      paste("<strong>FSS Institution: </strong>",
+            chosen_school()$fss_institution,
+            "<br />",
+            "<strong>USAspending Institution: </strong>",
+            chosen_school()$usa_recipient_name,
+            "<br />",
+            "<strong>Relative Percent Difference: </strong>",
+            paste0(round(chosen_school()$pct_diff,2), "%")
+      ),
       htmltools::HTML
     )
     
     reds_blues <- c("#B2182B", "#2166AC")    #c("#B2182B", "#D6604D", "#4393C3", "#2166AC")
     pal <- colorFactor(reds_blues, domain = VA_SnE$bin)
+    chosen_school_pal <- colorFactor(c("red", "blue"), domain = chosen_school()$bin, na.color = "black")
   
     leaflet(data = VA_SnE) %>%
       addProviderTiles(providers$CartoDB.Positron) %>%
@@ -132,6 +179,13 @@ server <- function(input, output, session) {
                        radius = ~rad,
                        color = ~pal(VA_SnE$bin), 
                        opacity = 0.7, fillOpacity = 0.7) %>%
+      addCircleMarkers(data = chosen_school(),
+                       popup = chosen_school_label, label = chosen_school_label,
+                       stroke = TRUE,
+                       weight = 2,
+                       radius = ~(rad-1),
+                       color = ~chosen_school_pal(chosen_school()$bin),
+                       opacity = 1) %>%
       addLegend("bottomleft", pal = pal, values = ~bin, opacity = 0.7, 
                 title = "Relative Percent Difference <br />
                 *Circle Size: size of RPD") 
@@ -143,30 +197,48 @@ server <- function(input, output, session) {
   
   output$sne_dollars <- renderPlot({
     
-    click <- input$VA_schools_marker_click
+    data <- dollar_comparison %>%
+      filter(duns_number == chosen_school()$duns_number)
     
-    if(is.null(click)){
-      ggplot() +
-        ggtitle("Click a map marker!")
-    }
-    else  #(!is.null(click$id))
-    {
-      data <- dollar_comparison %>%
-        filter(duns_number == click$id)
-      
-      data$value <- data$value/1000000  # convert to millions
-      
-      pct_diff_y <- max(data$value)/2
-      pct_diff_txt <- data$pct_diff[1]
-      
-      ggplot(data, aes(x = source, y=value, fill = source)) + 
-        geom_bar(stat="identity") +
-        geom_text(aes(label = round(value,2), vjust = -0.25)) +
-        geom_label(x=1.5, y=pct_diff_y, label=paste0("Pct Diff: ", round(pct_diff_txt,2), "%"), 
-                   color = "black", fill="white") +
-        ylab("Dollar Amount (millions)") +
-        ggtitle(paste0(data$fss_institution, " NSF FY18 Grants"))
-    }
+    data$value <- data$value/1000000  # convert to millions
+    
+    pct_diff_y <- max(data$value)/2
+    pct_diff_txt <- data$pct_diff[1]
+    
+    ggplot(data, aes(x = source, y=value, fill = source)) +
+      geom_bar(stat="identity") +
+      geom_text(aes(label = round(value,2), vjust = -0.25)) +
+      geom_label(x=1.5, y=pct_diff_y, label=paste0("Pct Diff: ", round(pct_diff_txt,2), "%"),
+                 color = "black", fill="white") +
+      ylab("Dollar Amount (millions)") +
+      ggtitle(paste0(data$fss_institution, " NSF FY18 Grants"))
+    
+    
+    
+    # click <- input$VA_schools_marker_click
+    # 
+    # if(is.null(click)){
+    #   ggplot() +
+    #     ggtitle("Click a map marker!")
+    # }
+    # else  #(!is.null(click$id))
+    # {
+    #   data <- dollar_comparison %>%
+    #     filter(duns_number == click$id)
+    #   
+    #   data$value <- data$value/1000000  # convert to millions
+    #   
+    #   pct_diff_y <- max(data$value)/2
+    #   pct_diff_txt <- data$pct_diff[1]
+    #   
+    #   ggplot(data, aes(x = source, y=value, fill = source)) + 
+    #     geom_bar(stat="identity") +
+    #     geom_text(aes(label = round(value,2), vjust = -0.25)) +
+    #     geom_label(x=1.5, y=pct_diff_y, label=paste0("Pct Diff: ", round(pct_diff_txt,2), "%"), 
+    #                color = "black", fill="white") +
+    #     ylab("Dollar Amount (millions)") +
+    #     ggtitle(paste0(data$fss_institution, " NSF FY18 Grants"))
+    # }
     
     })
   
@@ -174,23 +246,35 @@ server <- function(input, output, session) {
   # table of institution grants
   
   output$usa_grants <- renderDataTable({
+
+    data <- nsf_g18 %>%
+      filter(recipient_duns == chosen_school()$duns_number) %>%
+      select(recipient_duns, recipient_name, federal_action_obligation,
+             cfda_number, cfda_title, award_description)
     
-    click <- input$VA_schools_marker_click
+    DT::datatable(
+      data,
+      rownames = FALSE,
+      options = list( pageLength = 20, scrollX = T, #dom="BlfrtipS", iDisplayLength=-1,
+                      columnDefs = list(list(className = 'dt-right', targets = "_all")))
+    )
     
-    if(!is.null(click)){
-      
-      data <- nsf_g18 %>% 
-        filter(recipient_duns == click$id) %>%
-        select(recipient_duns, recipient_name, federal_action_obligation, 
-               cfda_number, cfda_title, award_description)
-      
-      DT::datatable(
-        data,
-        rownames = FALSE,
-        options = list( pageLength = 20, scrollX = T, #dom="BlfrtipS", iDisplayLength=-1,
-                        columnDefs = list(list(className = 'dt-right', targets = "_all")))
-      )
-    }
+    # click <- input$VA_schools_marker_click
+    # 
+    # if(!is.null(click)){
+    #   
+    #   data <- nsf_g18 %>% 
+    #     filter(recipient_duns == click$id) %>%
+    #     select(recipient_duns, recipient_name, federal_action_obligation, 
+    #            cfda_number, cfda_title, award_description)
+    #   
+    #   DT::datatable(
+    #     data,
+    #     rownames = FALSE,
+    #     options = list( pageLength = 20, scrollX = T, #dom="BlfrtipS", iDisplayLength=-1,
+    #                     columnDefs = list(list(className = 'dt-right', targets = "_all")))
+    #   )
+    # }
     
   })
   
