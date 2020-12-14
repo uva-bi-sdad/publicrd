@@ -14,9 +14,9 @@ library(tidyr)
 
 # grants
 
-nsf_g16 <- read_csv("data/prd/USAspending_benchmarking/NSF/FY16/All_Assistance_PrimeTransactions_2020-10-23_H19M21S10_1.csv")
-nsf_g17 <- read_csv("data/prd/USAspending_benchmarking/NSF/FY17/All_Assistance_PrimeTransactions_2020-09-25_H17M36S08_1.csv")
-nsf_g18 <- read_csv("data/prd/USAspending_benchmarking/NSF/FY18/All_Assistance_PrimeTransactions_2020-09-25_H18M10S45_1.csv")
+nsf_g16 <- read_csv("data/prd/USAspending_Exploration/NSF/FY16/All_Assistance_PrimeTransactions_2020-10-23_H19M21S10_1.csv")
+nsf_g17 <- read_csv("data/prd/USAspending_Exploration/NSF/FY17/All_Assistance_PrimeTransactions_2020-09-25_H17M36S08_1.csv")
+nsf_g18 <- read_csv("data/prd/USAspending_Exploration/NSF/FY18/All_Assistance_PrimeTransactions_2020-09-25_H18M10S45_1.csv")
 
 nsf_g16$FY <- "2016"
 nsf_g17$FY <- "2017"
@@ -27,9 +27,9 @@ rm(nsf_g16, nsf_g17, nsf_g18)
 
 # contracts
 
-nsf_c16 <- read_csv("data/prd/USAspending_benchmarking/NSF/FY16/All_Contracts_PrimeTransactions_2020-10-23_H19M20S19_1.csv")
-nsf_c17 <- read_csv("data/prd/USAspending_benchmarking/NSF/FY17/All_Contracts_PrimeTransactions_2020-09-25_H17M35S17_1.csv")
-nsf_c18 <- read_csv("data/prd/USAspending_benchmarking/NSF/FY18/All_Contracts_PrimeTransactions_2020-09-25_H18M07S04_1.csv")
+nsf_c16 <- read_csv("data/prd/USAspending_Exploration/NSF/FY16/All_Contracts_PrimeTransactions_2020-10-23_H19M20S19_1.csv")
+nsf_c17 <- read_csv("data/prd/USAspending_Exploration/NSF/FY17/All_Contracts_PrimeTransactions_2020-09-25_H17M35S17_1.csv")
+nsf_c18 <- read_csv("data/prd/USAspending_Exploration/NSF/FY18/All_Contracts_PrimeTransactions_2020-09-25_H18M07S04_1.csv")
 
 nsf_c <- rbind(nsf_c16, nsf_c17, nsf_c18)
 
@@ -162,6 +162,8 @@ sne_pct_diff <- 100*sne_diff/sne_fss # may want to change denominator
 
 # plot dollar amounts
 
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
 dollar_comparision <- data.frame(c("USAspending", "FSS", "USAspending", "FSS"), 
                                  c("SnE", "SnE", "RnD", "RnD"),
                                  c(sne_usa/1000000, sne_fss/1000000, rnd_usa/1000000, rnd_fss/1000000))
@@ -169,6 +171,7 @@ colnames(dollar_comparision) <- c("Source", "Category", "Amount")
 
 ggplot(dollar_comparision, aes(fill=Source, y=Amount, x=Category)) + 
   geom_bar(position="dodge", stat="identity") +
+  scale_fill_manual(values = cbPalette[c(4,2)]) +
   geom_text(aes(label = round(Amount,2)), position=position_dodge(width=0.9), vjust=-0.25) +
   geom_label(x=1, y=1.5, label=paste0("Pct Diff: ", round(rnd_pct_diff,2), "%"), 
              color = "black", fill="white") +
@@ -251,6 +254,7 @@ colnames(dollar_comparision) <- c("Source", "Category", "Amount")
 
 ggplot(dollar_comparision, aes(fill=Source, y=Amount, x=Category)) + 
   geom_bar(position="dodge", stat="identity") +
+  scale_fill_manual(values = cbPalette[c(4,2)]) +
   geom_text(aes(label = round(Amount,2)), position=position_dodge(width=0.9), vjust=-0.25) +
   geom_label(x=1, y=1, label=paste0("Pct Diff: ", round(rnd_pct_diff,2), "%"), 
              color = "black", fill="white") +
@@ -333,6 +337,7 @@ colnames(dollar_comparision) <- c("Source", "Category", "Amount")
 
 ggplot(dollar_comparision, aes(fill=Source, y=Amount, x=Category)) + 
   geom_bar(position="dodge", stat="identity") +
+  scale_fill_manual(values = cbPalette[c(4,2)]) +
   geom_text(aes(label = round(Amount,2)), position=position_dodge(width=0.9), vjust=-0.25) +
   geom_label(x=1, y=0.8, label=paste0("Pct Diff: ", round(rnd_pct_diff,2), "%"), 
              color = "black", fill="white") +
@@ -385,8 +390,8 @@ n <- length(row_sums)
 
 combo_df <- as.data.frame(combo_mat[1:n, ])
 
-write_csv(jmu_g18, "src/USAspending_Exploration_Fall2020/Case_Studies/jmu18.csv")
-write_csv(combo_df, "src/USAspending_Exploration_Fall2020/Case_Studies/combos.csv")
+#write_csv(jmu_g18, "src/USAspending_Exploration_Fall2020/Case_Studies/jmu18.csv")
+#write_csv(combo_df, "src/USAspending_Exploration_Fall2020/Case_Studies/combos.csv")
 
 
 #

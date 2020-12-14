@@ -10,6 +10,7 @@ library(tidyr)
 library(ggplot2)
 library(leaflet)
 library(DT)
+library(RColorBrewer)
 
 #
 # DATA INGESTION -------------------------------------------------------
@@ -138,6 +139,8 @@ server <- function(input, output, session) {
       filter(fss_institution == input$which_school)
   })
   
+  cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+  
   # leaflet map for VA universities and colleges ----------------------------
   
   output$VA_schools <- renderLeaflet({
@@ -207,6 +210,7 @@ server <- function(input, output, session) {
     
     ggplot(data, aes(x = source, y=value, fill = source)) +
       geom_bar(stat="identity") +
+      scale_fill_manual(values = cbPalette[c(4,2)]) + 
       geom_text(aes(label = round(value,2), vjust = -0.25)) +
       geom_label(x=1.5, y=pct_diff_y, label=paste0("Pct Diff: ", round(pct_diff_txt,2), "%"),
                  color = "black", fill="white") +
