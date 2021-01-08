@@ -1,0 +1,167 @@
+---
+title: "rnd"
+author: "Liz Miller"
+date: "6/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+## RnD Analysis: IC_CENTER, PROJECT_NUMBER, PROJECT_TITLE, PROJECT_TERMS
+
+Preliminary analysis for RnD project.
+
+Taking the subset of the data for analysis:
+
+```{r subsetting the data, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(tidytext)
+
+raw_abstracts_2020 <- read.csv("~/git/dspg20rnd/dspg20RnD/data/original/working_federal_reporter_2020.csv")
+
+data_subset <- raw_abstracts_2020 %>%
+  select(DEPARTMENT, PROJECT_NUMBER, PROJECT_TITLE, PROJECT_TERMS)
+
+data_subset <- data_subset %>% mutate_all(na_if,"")
+```
+
+## Analysis for Project_Number and Project_Terms
+I decided to focus on the project title and the project terms, as the project number didn't seem particularly meaningful. I used the Text Mining with R (tidytextmining.com) to look at the frequency and weights of the words in both the title and the terms by IC center. 
+
+```{r process for turning the text into a tidy format, message=FALSE, warning=FALSE}
+#Tidying the data
+
+project_terms <- data_subset %>%
+  select(DEPARTMENT, PROJECT_TERMS)
+project_titles <- data_subset %>%
+  select(DEPARTMENT, PROJECT_TITLE)
+
+tidy_terms <- tibble(dept = project_terms$DEPARTMENT, text = project_terms$PROJECT_TERMS)
+tidy_titles <- tibble(agen = project_titles$DEPARTMENT, 
+                      text = project_titles$PROJECT_TITLE)
+
+tidy_terms <- tidy_terms %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  count(dept, word, sort = TRUE)
+tidy_titles <- tidy_titles %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  count(dept, word, sort = TRUE)
+```
+##Word Frequencies
+
+```{r word frequency ggplots, message=FALSE, warning=FALSE, paged.print=TRUE}
+
+tidy_terms %>%
+  count(word, sort = TRUE) %>%
+  filter(n > 400000) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip() +
+  ggtitle("Terms: Highest Frequency Words")
+
+tidy_titles %>%
+  count(word, sort = TRUE) %>%
+  filter(n > 21000) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip() +
+  ggtitle("Titles: Highest Frequency Words")
+```
+##Deeper Analysis Using tf-idf
+
+Words are weighted based upon their frequency and exclusivity in each IC category. 
+
+```{r task, message=FALSE, warning=FALSE}
+#if-idf
+total_terms <- tidy_terms %>%
+  group_by(dept) %>%
+  summarize(total = sum(n))
+
+total_titles <- tidy_titles %>%
+  group_by(dept) %>%
+  summarize(total = sum(n))
+
+tidy_terms <- left_join(tidy_terms, total_terms)
+tidy_titles <- left_join(tidy_titles, total_titles)
+
+tidy_terms <- tidy_terms %>%
+  bind_tf_idf(word, dept, n)
+
+tidy_titles <- tidy_titles %>%
+  bind_tf_idf(word, dept, n)
+```
+#Words Highly Cooralated by IC
+
+```{r important words by IC, message=FALSE, warning=FALSE}
+
+#Function for easily creating graphs
+important_words <- function(df, department) {
+  selected <- df %>% filter(agen == department)
+  selected %>%
+    arrange(desc(tf_idf)) %>%
+    mutate(word = factor(word, levels = rev(unique(word)))) %>%
+    group_by(agen) %>%
+    top_n(10) %>%
+    ungroup() %>%
+    ggplot(aes(word, tf_idf, fill = agen)) +
+    geom_col(show.legend = FALSE) +
+    labs(x = NULL, y = "tf_idf") +
+    facet_wrap(~agen, ncol = 2, scales = "free") +
+    coord_flip()
+} 
+important_words(tidy_terms, c("DOD", "NSF", "HHS", "VA")) + labs(y = "terms")
+important_words(tidy_titles, c("DOD", "NSF", "HHS", "VA")) + labs (y = "titles")
+
+```
+#Doing the same steps as above for the abstracts data
+or at least, that's the plan, let's see how far we get 
+
+```{r abstracts analysis, message=FALSE, warning=FALSE}
+abstracts <- raw_abstracts_2020 %>%
+    select(DEPARTMENT, AGENCY, ORGANIZATION_NAME, ABSTRACT)
+
+tidy_abstracts <- tibble(dept = abstracts$DEPARTMENT, agen = abstracts$AGENCY, org = abstracts$ORGANIZATION_NAME, text = abstracts$ABSTRACT)
+
+tidy_abstracts <- tidy_abstracts %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  count(agen, word, sort = TRUE)
+
+tidy_abstracts %>%
+  count(word, sort = TRUE) %>%
+  filter(n > 450000) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n)) +
+  geom_col(show.legend = FALSE) +
+  xlab(NULL) +
+  coord_flip() +
+  ggtitle(label = "Abstracts:", subtitle = "Highest Frequency Words")
+
+total_abstracts <- tidy_abstracts %>%
+group_by(agen) %>%
+summarize(total = sum(n))
+
+tidy_abstracts <- left_join(tidy_abstracts, total_abstracts)
+
+tidy_abstracts <- tidy_abstracts %>%
+bind_tf_idf(word, agen, n)
+
+important_words(tidy_abstracts, c("NIH", "ALLCDC", "NSF", "VA")) + labs(y = "Abstract Terms Weighted by Agency")
+
+important_words(tidy_terms, c("DOD", "EPA", "HHS", "NASA")) + labs(y = "terms")
+important_words(tidy_titles, c("DOD", "EPA", "HHS", "NASA")) + labs (y = "titles")
+ 
+```
+Done

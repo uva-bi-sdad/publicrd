@@ -1,0 +1,37 @@
+---
+title: "Emerging Topics"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readr)
+```
+
+
+```{r}
+df <- read_csv("reg_topics.csv")
+df$Slope = round(df$Slope,6)
+saveRDS(df, "../r_shiny_app_v2/data/reg_topics.rds")
+```
+
+```{r}
+df <- read_csv("pan_topics.csv")
+df$Slope = round(df$Slope,6)
+saveRDS(df, "../r_shiny_app_v2/data/pan_topics.rds")
+```
+```{r}
+df <- read_csv("cor_topics.csv")
+df$Slope = round(df$Slope,6)
+saveRDS(df, "../r_shiny_app_v2/data/cor_topics.rds")
+```
+
+```{r}
+df <- read_csv("full_topics.csv")
+df$Slope = round(df$Slope,6)
+saveRDS(df, "../r_shiny_app_v2/data/full_topics.rds")
+```
+

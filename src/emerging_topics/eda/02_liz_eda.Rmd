@@ -1,0 +1,181 @@
+---
+title: "New Data EDA"
+author: "Liz Miller"
+date: "7/2/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## EDA with the 2019 Data!! Thank you Sean :)  
+
+I'm going to put things I find at the top here and add to it as I work through code and graphs below:
+
+1. IC_CENTER, BUDGET_START_DATE, BUDGET_END_DATE, and FY_TOTAL_COST_SUBPROJECT are all entirely NA
+2. FY.x and FY.y are slightly different. 
+3. DEPARTMENT == 'VA' has no values for FY_TOTAL_COST
+
+```{r importing the datat, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(tidytext)
+library(readr)
+library(naniar)
+library(gridExtra)
+
+raw_abstracts_2020 <- read_csv("~/git/dspg20rnd/dspg20RnD/data/original/working_federal_reporter_2020.csv")
+
+abstracts_2019 <- raw_abstracts_2020 %>%
+  filter(FY.x == 2019) #Use FY.x 
+
+```
+
+## What kind of missing values do we have?
+
+```{r show missing values, echo = FALSE}
+
+sum(is.na(raw_abstracts_2020$IC_CENTER))
+
+gg_miss_var(raw_abstracts_2020, show_pct = TRUE) +
+  labs(y = "% Missing: All")
+
+gg_miss_var(abstracts_2019, show_pct = TRUE) +
+  labs(y = "% Missing: 2019")
+
+raw_abstracts_2020 %>%
+  gg_miss_var(show_pct = TRUE, facet = DEPARTMENT) + 
+  labs(y = "% Missing by Department")
+
+#pdf(file = "missing_dep.pdf", width = 10, height = 15)
+#g <- gg_miss_var(show_pct = TRUE, facet = DEPARTMENT) +
+  #labs(y = "% Missing by Department")
+#print(g)
+#dev.off()
+
+```
+
+#Highest word counts
+
+```{r convert the data to a tiny format for some word based analysis, echo = FALSE}
+
+tidy_all <- tibble(text = raw_abstracts_2020$ABSTRACT)
+tidy_2019 <- tibble(text = abstracts_2019$ABSTRACT)
+tidy_titles <- tibble(text = raw_abstracts_2020$PROJECT_TITLE)
+
+tidy_all <- tidy_all %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  count(word, sort = TRUE)
+
+tidy_2019 <- tidy_2019 %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  count(word, sort = TRUE)
+
+tidy_titles <- tidy_titles %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  count(word, sort = TRUE)
+```
+
+##Abstract frequent words vs. title frequent words
+
+``` {r display frequency, echo = FALSE}
+
+tidy_all %>%
+  count(word, sort = TRUE) %>%
+  filter(n > 500000) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n, fill = word)) +
+  geom_col(show.legend = FALSE) +
+  xlab(NULL) +
+  coord_flip() +
+  ggtitle("Words: All Abstracts") -> abstract
+
+tidy_titles %>%
+  count(word, sort = TRUE) %>%
+  filter(n > 19000) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n, fill = word)) +
+  geom_col(show.legend = FALSE) +
+  xlab(NULL) +
+  coord_flip() +
+  ggtitle("Titles: All Abstracts") -> title
+
+grid.arrange(abstract, title, ncol = 2)
+
+```
+
+##Looking at Cost! 
+
+``` {r variable costs}
+raw_abstracts_2020 %>%
+  ggplot(aes(x = FY.x, y = FY_TOTAL_COST, colour = DEPARTMENT)) +
+  geom_point()
+
+raw_abstracts_2020 %>%
+  filter(FY_TOTAL_COST > 25000000) %>%
+  count()
+
+raw_abstracts_2020 %>%
+  filter(FY_TOTAL_COST == 1) %>%
+  count()
+
+raw_abstracts_2020 %>%
+  filter(FY_TOTAL_COST < 10000) %>%
+  count()
+
+raw_abstracts_2020 %>%
+  filter(between(FY_TOTAL_COST, 10000, 25000000)) %>%
+  ggplot(aes(x = FY.x, y = FY_TOTAL_COST, colour = DEPARTMENT)) +
+  geom_point()
+
+raw_abstracts_2020 %>%
+  filter(between(FY_TOTAL_COST, 10000, 25000000)) %>%
+  ggplot(aes(x = DEPARTMENT, y = FY_TOTAL_COST, colour = DEPARTMENT)) +
+  geom_boxplot() +
+  facet_wrap(~ FY.x) 
+
+#Note VA does not show in this output because all FY_TOTAL_COST data is missing for DEPARTMENT == 'VA'
+
+
+```
+
+##Looking at Length!
+
+``` {r word counts, echo = FALSE}
+
+raw_abstracts_2020$ab_char <- nchar(raw_abstracts_2020$ABSTRACT)
+
+raw_abstracts_2020 %>%
+  ggplot(aes(x = ab_char, colour = DEPARTMENT)) +
+  geom_freqpoly(bins = 10)
+
+raw_abstracts_2020 %>%
+  ggplot() +
+  stat_summary(aes(x = DEPARTMENT, y = ab_char),
+               fun.ymin = min,
+               fun.ymax = max,
+               fun.y = mean)
+
+#Let's do some calculations! (This is probably not the ideal way to preform this calculation and visualization, but here we are)
+
+raw_abstracts_2020 %>%
+  filter(ab_char < 150) %>%
+  count(DEPARTMENT)
+
+low_char <- c(78, 0, 13, 3929, 169, 156, 158, 9)
+
+all_char <- raw_abstracts_2020 %>%
+  count(DEPARTMENT)
+
+all_char <- cbind(all_char, low)
+all_char$removed_rel <- (all_char$low/all_char$n) * 100
+
+ggplot(all_char, aes(x = DEPARTMENT, y = rel, colour = DEPARTMENT)) +
+  geom_bar(stat = "identity")
+
+```
+
+
