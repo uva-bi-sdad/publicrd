@@ -1,4 +1,4 @@
-# NSF FY18 grants to VA Universities/Colleges
+# NSF FY18 grants (prime and sub) to VA Universities/Colleges
 
 library(readr)
 library(ggplot2)
@@ -13,7 +13,15 @@ library(tidyr)
 #
 
 # USAspending - NSF FY18 grants
+
+# prime grants
 nsf_g18 <- read_csv("data/prd/USAspending_Exploration/NSF/FY18/All_Assistance_PrimeTransactions_2020-09-25_H18M10S45_1.csv")
+# sub grants
+nsf_sg18 <- read_csv("data/prd/USAspending_Exploration/NSF/FY18/All_Assistance_Subawards_2021-01-07_H17M19S13_1.csv")
+
+# write out subgrants to rds file
+#write_rds(nsf_sg18, "src/USAspending_Exploration_Fall2020/Case_Studies/VA_SnE_App/usa_nsf_fy18_sub.rds")
+
 
 # USAspending - NSF F18 contracts (Need to check that there is no contract data for VA schools)
 nsf_c18 <- read_csv("data/prd/USAspending_Exploration/NSF/FY18/All_Contracts_PrimeTransactions_2020-09-25_H18M07S04_1.csv")
@@ -38,9 +46,19 @@ colnames(ipeds) <- c("UnitID", "Institution", "duns_number", "longitude", "latit
 # **grants money**
 
 # USAspending SnE dollar amounts for every recipient
-usa_18 <- nsf_g18 %>%
-  group_by(recipient_name, recipient_duns) %>%
-  summarise(USA_SnE = sum(federal_action_obligation))
+
+# prime awards
+usa_18_prime <- nsf_g18 %>%
+  group_by(recipient_duns) %>% # recipient_name, 
+  summarise(USA_SnE_prime = sum(federal_action_obligation))
+
+# sub awards
+usa_18_sub <- nsf_sg18 %>%
+  group_by(subawardee_duns) %>% # subawardee_name, 
+  summarise(USA_SnE_sub = sum(subaward_amount))
+
+# merge prime and sub awards
+usa_18 <- merge(usa_18_prime, usa_18_sub, by.x = "recipient_duns", by.y = "subawardee_duns", all = TRUE)
 
 
 # filter USAspending for only VA school duns numbers -- join fss_18 & usa_18 and then ipeds on duns numbers
@@ -61,27 +79,28 @@ VA_schools <- merge(VA_schools, ipeds[!is.na(ipeds$duns_number), 3:5], by = "dun
 
 VA_schools <- VA_schools %>%
   rename(fss_institution = `State, outlying area, and institution`,
-         usa_recipient_name = recipient_name,
+         #usa_recipient_name = recipient_name,
          FSS_SnE = NSF)
 VA_schools$FSS_SnE <- VA_schools$FSS_SnE*1000
-VA_schools <- VA_schools[ , c(1,2,4,6,7,3,5)]
 
 # ODU duns need to be replaced with the duns for ODU Research Foundation (ODU was not in USAspending)
 
 odu_row <- VA_schools[VA_schools$duns_number == "041448465", ]
 odu_row$duns_number <- "077945947"
-odu_row$usa_recipient_name <- usa_18[!is.na(usa_18$recipient_duns) & usa_18$recipient_duns == "077945947", "recipient_name"]
-odu_row$USA_SnE <- usa_18[!is.na(usa_18$recipient_duns) & usa_18$recipient_duns == "077945947", "USA_SnE"]
+#odu_row$usa_recipient_name <- usa_18[!is.na(usa_18$recipient_duns) & usa_18$recipient_duns == "077945947", "recipient_name"]
+odu_row$USA_SnE_prime <- usa_18[!is.na(usa_18$recipient_duns) & usa_18$recipient_duns == "077945947", "USA_SnE_prime"]
+odu_row$USA_SnE_sub <- usa_18[!is.na(usa_18$recipient_duns) & usa_18$recipient_duns == "077945947", "USA_SnE_sub"]
 VA_schools[VA_schools$duns_number == "041448465", ] <- odu_row
 
 # calculate the percent difference between FSS and USAspending
 
 # fix data types first
-VA_schools$USA_SnE <- as.numeric(VA_schools$USA_SnE)
-VA_schools$usa_recipient_name <- as.character(VA_schools$usa_recipient_name)
+#VA_schools$USA_SnE_prime <- as.numeric(VA_schools$USA_SnE)
+#VA_schools$usa_recipient_name <- as.character(VA_schools$usa_recipient_name)
 
-VA_schools$pct_diff <- 100*(VA_schools$FSS_SnE - VA_schools$USA_SnE)/VA_schools$FSS_SnE
-
+VA_schools$USA_SnE_total <- rowSums(VA_schools[ , 4:5], na.rm = TRUE)
+VA_schools$pct_diff <- 100*(VA_schools$FSS_SnE - VA_schools$USA_SnE_total)/VA_schools$FSS_SnE
+VA_schools <- VA_schools[ , c(1,2,6,7,3,4,5,8,9)]
 
 # **contracts money**
 

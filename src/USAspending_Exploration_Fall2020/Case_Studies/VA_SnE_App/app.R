@@ -18,6 +18,7 @@ library(RColorBrewer)
 
 # USAspending - NSF FY18 grants
 nsf_g18 <- read_rds("usa_nsf_fy18.rds")
+nsf_sg18 <- read_rds("usa_nsf_fy18_sub.rds")
 
 VA_SnE <- read_rds("VA_SnE.rds")
 
@@ -26,9 +27,16 @@ VA_SnE <- read_rds("VA_SnE.rds")
 # DATA TRANSFORMATIONS ---------------------------------------------------------
 #
 
-# convert to wide data for plots
+# convert to wide data for plots with source = {FSS, USA}, and type = {prime, sub}
 
-dollar_comparison <- gather(VA_SnE, source, value, FSS_SnE, USA_SnE, factor_key = TRUE)
+dollar_comparison <- gather(VA_SnE, source, value, FSS_SnE, USA_SnE_prime, USA_SnE_sub, 
+                            factor_key = TRUE)
+dollar_comparison$type <- "USA"
+dollar_comparison[dollar_comparison$source == "FSS_SnE", "type"] <- "FSS"
+dollar_comparison$source <- factor(dollar_comparison$source, 
+                                   levels = c("FSS_SnE", "USA_SnE_sub", "USA_SnE_prime"))
+dollar_comparison$value[is.na(dollar_comparison$value)] <- 0
+
 
 # make pct_diff bins for leaflet color of circle markers --------------------------
 
@@ -109,12 +117,21 @@ ui <- dashboardPage(
     
     fluidRow(
       boxPlus(
-        title = "USA Spending Grants",
+        title = "USA Spending Prime Grants",
         width = 12,
-        dataTableOutput("usa_grants")
+        dataTableOutput("usa_grants_prime")
       )
-      
+    ),
+    
+    fluidRow(
+      boxPlus(
+        title = "USA Spending Sub-Grants",
+        width = 12,
+        dataTableOutput("usa_grants_sub")
+      )
     )
+    
+    
   )
 )
 
@@ -149,9 +166,9 @@ server <- function(input, output, session) {
       paste("<strong>FSS Institution: </strong>",
             VA_SnE$fss_institution,
             "<br />",
-            "<strong>USAspending Institution: </strong>",
-            VA_SnE$usa_recipient_name,
-            "<br />",
+            #"<strong>USAspending Institution: </strong>",
+            #VA_SnE$usa_recipient_name,
+            #"<br />",
             "<strong>Relative Percent Difference: </strong>",
             paste0(round(VA_SnE$pct_diff,2), "%")
             ),
@@ -162,9 +179,9 @@ server <- function(input, output, session) {
       paste("<strong>FSS Institution: </strong>",
             chosen_school()$fss_institution,
             "<br />",
-            "<strong>USAspending Institution: </strong>",
-            chosen_school()$usa_recipient_name,
-            "<br />",
+            #"<strong>USAspending Institution: </strong>",
+            #chosen_school()$usa_recipient_name,
+            #"<br />",
             "<strong>Relative Percent Difference: </strong>",
             paste0(round(chosen_school()$pct_diff,2), "%")
       ),
@@ -181,14 +198,15 @@ server <- function(input, output, session) {
                        stroke = FALSE,
                        radius = ~rad,
                        color = ~pal(VA_SnE$bin), 
-                       opacity = 0.7, fillOpacity = 0.7) %>%
+                       opacity = 0.6, fillOpacity = 0.6) %>%
       addCircleMarkers(data = chosen_school(),
                        popup = chosen_school_label, label = chosen_school_label,
                        stroke = TRUE,
                        weight = 2,
                        radius = ~(rad-1),
                        color = ~chosen_school_pal(chosen_school()$bin),
-                       opacity = 1) %>%
+                       opacity = 1,
+                       fillOpacity = 0.7) %>%
       addLegend("bottomleft", pal = pal, values = ~bin, opacity = 0.7, 
                 title = "Relative Percent Difference <br />
                 *Circle Size: size of RPD") 
@@ -205,17 +223,18 @@ server <- function(input, output, session) {
     
     data$value <- data$value/1000000  # convert to millions
     
-    pct_diff_y <- max(data$value)/2
+    pct_diff_y <- max(data$value, na.rm = TRUE)/3
     pct_diff_txt <- data$pct_diff[1]
     
-    ggplot(data, aes(x = source, y=value, fill = source)) +
-      geom_bar(stat="identity") +
-      scale_fill_manual(values = cbPalette[c(4,2)]) + 
-      geom_text(aes(label = round(value,2), vjust = -0.25)) +
+    ggplot(data, aes(x = type, y=value, fill = source)) +
+      geom_bar(position = "stack", stat="identity") +
+      scale_fill_manual(values = cbPalette[c(4,7,2)]) + 
+      geom_text(data = subset(data, value != 0), aes(label = round(value,2)), position = position_stack(vjust = 0.7)) +
       geom_label(x=1.5, y=pct_diff_y, label=paste0("Pct Diff: ", round(pct_diff_txt,2), "%"),
                  color = "black", fill="white") +
       ylab("Dollar Amount (millions)") +
-      ggtitle(paste0(data$fss_institution, " NSF FY18 Grants"))
+      ggtitle(paste0(data$fss_institution, " NSF FY18 Grants")) 
+      #theme(legend.position = "none")
     
     
     
@@ -247,9 +266,9 @@ server <- function(input, output, session) {
     })
   
   
-  # table of institution grants
+  # table of institution prime grants
   
-  output$usa_grants <- renderDataTable({
+  output$usa_grants_prime <- renderDataTable({
 
     data <- nsf_g18 %>%
       filter(recipient_duns == chosen_school()$duns_number) %>%
@@ -282,8 +301,25 @@ server <- function(input, output, session) {
     
   })
   
+  # table of institution sub-grants
+  
+  output$usa_grants_sub <- renderDataTable({
+    
+    data <- nsf_sg18 %>%
+      filter(subawardee_duns == chosen_school()$duns_number) %>%
+      select(subawardee_duns, subawardee_name, subaward_amount,
+             prime_award_cfda_number, prime_award_cfda_title, prime_award_description) #subaward_description)
+    
+    DT::datatable(
+      data,
+      rownames = FALSE,
+      options = list( pageLength = 20, scrollX = T, #dom="BlfrtipS", iDisplayLength=-1,
+                      columnDefs = list(list(className = 'dt-right', targets = "_all")))
+    )
+  
+  })
 
-  }
+}
 
 
 #
