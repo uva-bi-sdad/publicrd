@@ -6,14 +6,18 @@ library(stringr)
 library(dplyr)
 library(latex2exp)
 
-df <- read_csv("nmf_df.csv")
+df <- read_csv("full_nmf_results.csv")
 
 # add in topic ranking by percent docs containing topic, largest percent = 1
-r1 <- order(df$percent_docs_containing_topic, decreasing = TRUE)
-df$rank_docs_contain_topic <- NA
-df$rank_docs_contain_topic[r1] <- 1:75 
+# not using this anymore - labeling by FR1, FR2, etc. 
 
-# extract words from topic_words column and create actual list rather than a string
+#r1 <- order(df$percent_docs_containing_topic, decreasing = TRUE)
+#df$rank_docs_contain_topic <- NA
+#df$rank_docs_contain_topic[r1] <- 1:75 
+
+#
+# extract words from topic_words column and create actual list rather than a string -------------
+#
 
 topic_wds_10 <- list()
 topic_wds_5 <- list()
@@ -45,12 +49,28 @@ df$top_10_words <- as.character(topic_wds_10)
 df$top_5_words <- as.character(topic_wds_5)
 df$top_3_words <- as.character(topic_wds_3)
 
-plot_df <- df %>% select(top_5_words, percent_docs_containing_topic, rank_docs_contain_topic)
-plot_df <- plot_df[order(plot_df$percent_docs_containing_topic, decreasing=FALSE),]
+
+#
+# Add labels to topics -- labeled by ABC order ----------------------------------------------
+#
+
+df <- df %>%
+  arrange(top_10_words)
+
+df$topic_label <- ""
+
+for(i in 1:75)
+{
+  df$topic_label[i] <- paste0("FR", i)
+}
+
 
 #
 # Percentage of Docs per Topic ----------------------------------
 #
+
+plot_df <- df %>% select(top_5_words, percent_docs_containing_topic, topic_label)
+plot_df <- plot_df[order(plot_df$percent_docs_containing_topic, decreasing=FALSE),]
 
 p_df <- head(plot_df,10)
 p_df <- rbind(p_df, tail(plot_df,10))
@@ -63,8 +83,6 @@ p_df$group <- c(rep("least",10), rep("most", 10))
 p_df$top_5_words <- factor(p_df$top_5_words, levels = unique(p_df$top_5_words))
 
 
-cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-
 # Lollipop plot - percentage of docs per topic
 
 text_col <- ifelse(p_df$group == "most", "black", "black")
@@ -72,7 +90,7 @@ text_col <- ifelse(p_df$group == "most", "black", "black")
 ggplot(data=p_df, aes(x=percent_docs_containing_topic, y=top_5_words)) +
   geom_segment(aes(x=0, y=top_5_words , xend=percent_docs_containing_topic, yend=top_5_words, color=group), size=2) +
   geom_point(aes(color=group), size=4) + #color="blue", size=1, alpha=1) +
-  geom_text(aes(x = -2, label=rank_docs_contain_topic)) + # size=4) +
+  geom_text(aes(x = -2.2, label=topic_label)) + # size=4) +
   scale_color_manual(values=c("navy", "orange")) +
   #xlim(-3,52) +
   theme_minimal() +
@@ -92,7 +110,7 @@ ggplot(data=p_df, aes(x=percent_docs_containing_topic, y=top_5_words)) +
 #
 
 
-plot_df <- df %>% select(top_5_words, percent_times_max_topic, rank_docs_contain_topic)
+plot_df <- df %>% select(top_5_words, percent_times_max_topic, topic_label)
 plot_df <- plot_df[order(plot_df$percent_times_max_topic, decreasing=FALSE),]
 
 p_df <- head(plot_df,10)
@@ -113,7 +131,7 @@ text_col <- ifelse(p_df$group == "most", "black", "black")
 ggplot(data=p_df, aes(x=percent_times_max_topic, y=top_5_words)) +
   geom_segment(aes(x=0, y=top_5_words , xend=percent_times_max_topic, yend=top_5_words, color=group), size=2) +
   geom_point(aes(color=group), size=4) + #color="blue", size=1, alpha=1) 
-  geom_text(aes(x = -0.2, label=rank_docs_contain_topic)) +
+  geom_text(aes(x = -0.2, label=topic_label)) +
   scale_color_manual(values=c("navy", "orange")) +
   theme_minimal() +
   theme(axis.text.y = element_text(size = 13, color = text_col), 
