@@ -11,6 +11,9 @@ library(readr)
 library(XML)
 library(methods)
 
+# turns off scientific notation so casting project id's to character isn't a problem
+options(scipen = 999)  
+
 #Federal Reporter 2020 Abstract Pull -------------------------------------------------------------------------
 # THIS SECTION IS GOOD, no parsing warnings/errors
 
@@ -212,7 +215,7 @@ data_fixed <- left_join(A_metadatafederalreporter, CFDA_glossary, by = "DEPARTME
 
 fixing_cfda_code <- function(cfda_project_code){
 
-  fixed_cfda <-ifelse(cfda_project_code != 000 & cfda_project_code != 999 & grepl("^[0-9]{3}$", cfda_project_code) == TRUE,
+  fixed_cfda <-ifelse(cfda_project_code != '000' & cfda_project_code != '999' & grepl("^[0-9]{3}$", cfda_project_code) == TRUE,
                       paste(data_fixed$department_digits,cfda_project_code, sep = "."),
                       cfda_project_code)
 
@@ -237,5 +240,5 @@ AAA_updated_federal_reporter <- full_join(A_abstracts_federal_reporter, A_metada
 write.csv(AAA_updated_federal_reporter, file = "data/prd/Federal_RePORTER/FR_raw_2021FEB24.csv", row.names = FALSE)
 write_rds(AAA_updated_federal_reporter, "data/prd/Federal_RePORTER/FR_raw_2021FEB24.rds")
 
-library(feather)
-write_feather(AAA_updated_federal_reporter, "data/prd/Federal_RePORTER/FR_raw_2021FEB24.feather")
+#library(feather)  # didn't read in for python
+#write_feather(AAA_updated_federal_reporter, "data/prd/Federal_RePORTER/FR_raw_2021FEB24.feather")
