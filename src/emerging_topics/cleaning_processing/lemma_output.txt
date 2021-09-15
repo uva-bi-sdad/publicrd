@@ -1,0 +1,15 @@
+2020-07-19 01:07:59 INFO: Loading these models for language: en (English):
+=======================
+| Processor | Package |
+-----------------------
+| tokenize  | ewt     |
+| pos       | ewt     |
+| lemma     | ewt     |
+=======================
+
+2020-07-19 01:07:59 INFO: Use device: gpu
+2020-07-19 01:07:59 INFO: Loading: tokenize
+2020-07-19 01:08:01 INFO: Loading: pos
+2020-07-19 01:08:02 INFO: Loading: lemma
+2020-07-19 01:08:02 INFO: Done loading processors!
+time: 199700.5356669426
