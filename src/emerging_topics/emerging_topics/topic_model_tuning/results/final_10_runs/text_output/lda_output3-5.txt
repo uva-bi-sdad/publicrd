@@ -1,0 +1,279 @@
+Iteration 0
+  Model time: 392.25928807258606
+  Coherence time: 63.33858370780945
+Number of topics = 5 complete.
+  Model time: 513.5938036441803
+  Coherence time: 78.2639753818512
+Number of topics = 10 complete.
+  Model time: 552.0527219772339
+  Coherence time: 94.70614767074585
+Number of topics = 15 complete.
+  Model time: 594.5162229537964
+  Coherence time: 112.6275577545166
+Number of topics = 20 complete.
+  Model time: 588.853273153305
+  Coherence time: 122.95524168014526
+Number of topics = 25 complete.
+  Model time: 619.8203055858612
+  Coherence time: 187.8452615737915
+Number of topics = 30 complete.
+  Model time: 647.3083958625793
+  Coherence time: 167.16833591461182
+Number of topics = 35 complete.
+  Model time: 664.759557723999
+  Coherence time: 195.20896935462952
+Number of topics = 40 complete.
+  Model time: 707.6221766471863
+  Coherence time: 195.54591035842896
+Number of topics = 45 complete.
+  Model time: 732.9113721847534
+  Coherence time: 207.55731201171875
+Number of topics = 50 complete.
+  Model time: 762.0381338596344
+  Coherence time: 239.10977339744568
+Number of topics = 55 complete.
+  Model time: 783.6884670257568
+  Coherence time: 253.76939392089844
+Number of topics = 60 complete.
+/apps/software/standard/core/anaconda/2019.10-py3.7/lib/python3.7/site-packages/joblib/externals/loky/process_executor.py:706: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
+  "timeout or by a memory leak.", UserWarning
+  Model time: 854.8993465900421
+  Coherence time: 282.17776679992676
+Number of topics = 65 complete.
+  Model time: 879.2599232196808
+  Coherence time: 282.5720989704132
+Number of topics = 70 complete.
+  Model time: 905.1187193393707
+  Coherence time: 350.2185580730438
+Number of topics = 75 complete.
+  Model time: 897.8329648971558
+  Coherence time: 317.089314699173
+Number of topics = 80 complete.
+  Model time: 938.9759619235992
+  Coherence time: 336.0385277271271
+Number of topics = 85 complete.
+  Model time: 978.5283603668213
+  Coherence time: 347.15083742141724
+Number of topics = 90 complete.
+  Model time: 995.0677645206451
+  Coherence time: 393.17962074279785
+Number of topics = 95 complete.
+  Model time: 1010.8698983192444
+  Coherence time: 395.158762216568
+Number of topics = 100 complete.
+  Model time: 1048.713501214981
+  Coherence time: 429.1838321685791
+Number of topics = 105 complete.
+  Model time: 1096.383668422699
+  Coherence time: 438.09005546569824
+Number of topics = 110 complete.
+  Model time: 1106.4779305458069
+  Coherence time: 453.5874984264374
+Number of topics = 115 complete.
+  Model time: 1096.991751909256
+  Coherence time: 462.0659008026123
+Number of topics = 120 complete.
+  Model time: 1133.499608039856
+  Coherence time: 474.7554979324341
+Number of topics = 125 complete.
+  Model time: 1207.8934679031372
+  Coherence time: 520.6146845817566
+Number of topics = 130 complete.
+  Model time: 1221.1437072753906
+  Coherence time: 519.4954867362976
+Number of topics = 140 complete.
+  Model time: 1315.0384557247162
+  Coherence time: 540.6615514755249
+Number of topics = 150 complete.
+  Model time: 1439.9987483024597
+  Coherence time: 599.3705072402954
+Number of topics = 175 complete.
+  Model time: 1544.5925452709198
+  Coherence time: 720.2523806095123
+Number of topics = 200 complete.
+Iteration 1
+  Model time: 400.062123298645
+  Coherence time: 65.711266040802
+Number of topics = 5 complete.
+  Model time: 527.2300884723663
+  Coherence time: 80.63953566551208
+Number of topics = 10 complete.
+  Model time: 540.5095863342285
+  Coherence time: 93.19531512260437
+Number of topics = 15 complete.
+  Model time: 578.1152184009552
+  Coherence time: 116.59463858604431
+Number of topics = 20 complete.
+  Model time: 596.2109344005585
+  Coherence time: 132.97234582901
+Number of topics = 25 complete.
+  Model time: 612.5703709125519
+  Coherence time: 151.53804659843445
+Number of topics = 30 complete.
+  Model time: 666.7014939785004
+  Coherence time: 165.3738911151886
+Number of topics = 35 complete.
+  Model time: 682.8583738803864
+  Coherence time: 185.16977906227112
+Number of topics = 40 complete.
+  Model time: 710.4653332233429
+  Coherence time: 204.37147784233093
+Number of topics = 45 complete.
+  Model time: 736.1929650306702
+  Coherence time: 213.05657124519348
+Number of topics = 50 complete.
+  Model time: 758.02170753479
+  Coherence time: 239.14739632606506
+Number of topics = 55 complete.
+  Model time: 775.5984084606171
+  Coherence time: 252.86276125907898
+Number of topics = 60 complete.
+/apps/software/standard/core/anaconda/2019.10-py3.7/lib/python3.7/site-packages/joblib/externals/loky/process_executor.py:706: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
+  "timeout or by a memory leak.", UserWarning
+  Model time: 842.4243881702423
+  Coherence time: 292.75136041641235
+Number of topics = 65 complete.
+  Model time: 872.3532993793488
+  Coherence time: 329.67377638816833
+Number of topics = 70 complete.
+  Model time: 878.3586947917938
+  Coherence time: 309.36962366104126
+Number of topics = 75 complete.
+  Model time: 905.6277046203613
+  Coherence time: 326.3907868862152
+Number of topics = 80 complete.
+  Model time: 940.3213059902191
+  Coherence time: 350.6765606403351
+Number of topics = 85 complete.
+  Model time: 958.5690970420837
+  Coherence time: 366.04736852645874
+Number of topics = 90 complete.
+  Model time: 1002.8100397586823
+  Coherence time: 383.833087682724
+Number of topics = 95 complete.
+  Model time: 1004.6109399795532
+  Coherence time: 396.4709746837616
+Number of topics = 100 complete.
+  Model time: 1051.2735974788666
+  Coherence time: 397.433513879776
+Number of topics = 105 complete.
+  Model time: 1074.7055039405823
+  Coherence time: 458.8632731437683
+Number of topics = 110 complete.
+  Model time: 1083.3031272888184
+  Coherence time: 462.439297914505
+Number of topics = 115 complete.
+  Model time: 1079.6175909042358
+  Coherence time: 474.91657757759094
+Number of topics = 120 complete.
+  Model time: 1142.0722320079803
+  Coherence time: 489.14115929603577
+Number of topics = 125 complete.
+  Model time: 1168.885407447815
+  Coherence time: 507.60864090919495
+Number of topics = 130 complete.
+  Model time: 1223.5676176548004
+  Coherence time: 504.7425608634949
+Number of topics = 140 complete.
+  Model time: 1290.3385934829712
+  Coherence time: 544.7426145076752
+Number of topics = 150 complete.
+  Model time: 1466.9459927082062
+  Coherence time: 620.6617658138275
+Number of topics = 175 complete.
+  Model time: 1584.7423014640808
+  Coherence time: 704.7405498027802
+Number of topics = 200 complete.
+Iteration 2
+  Model time: 411.6708414554596
+  Coherence time: 63.268473625183105
+Number of topics = 5 complete.
+  Model time: 516.7284595966339
+  Coherence time: 74.60413074493408
+Number of topics = 10 complete.
+  Model time: 561.2083501815796
+  Coherence time: 91.81941437721252
+Number of topics = 15 complete.
+  Model time: 567.9655969142914
+  Coherence time: 115.46409726142883
+Number of topics = 20 complete.
+  Model time: 611.165376663208
+  Coherence time: 123.9701030254364
+Number of topics = 25 complete.
+  Model time: 632.8674011230469
+  Coherence time: 147.9169728755951
+Number of topics = 30 complete.
+  Model time: 667.2093291282654
+  Coherence time: 184.49033164978027
+Number of topics = 35 complete.
+  Model time: 673.0469923019409
+  Coherence time: 181.36419892311096
+Number of topics = 40 complete.
+  Model time: 709.7329092025757
+  Coherence time: 213.01782822608948
+Number of topics = 45 complete.
+  Model time: 745.0488119125366
+  Coherence time: 225.54443955421448
+Number of topics = 50 complete.
+  Model time: 760.6042222976685
+  Coherence time: 234.65011954307556
+Number of topics = 55 complete.
+  Model time: 789.2457175254822
+  Coherence time: 263.45788407325745
+Number of topics = 60 complete.
+  Model time: 849.8397357463837
+  Coherence time: 264.4467179775238
+Number of topics = 65 complete.
+  Model time: 871.6060950756073
+  Coherence time: 292.06456112861633
+Number of topics = 70 complete.
+  Model time: 888.3597638607025
+  Coherence time: 312.19325494766235
+Number of topics = 75 complete.
+  Model time: 882.2110526561737
+  Coherence time: 352.8580696582794
+Number of topics = 80 complete.
+  Model time: 931.6359295845032
+  Coherence time: 342.9155271053314
+Number of topics = 85 complete.
+  Model time: 963.4616763591766
+  Coherence time: 367.6242253780365
+Number of topics = 90 complete.
+  Model time: 993.5037679672241
+  Coherence time: 365.6011736392975
+Number of topics = 95 complete.
+  Model time: 1019.8241059780121
+  Coherence time: 397.21732568740845
+Number of topics = 100 complete.
+  Model time: 1062.5673580169678
+  Coherence time: 401.08845472335815
+Number of topics = 105 complete.
+  Model time: 1067.5821223258972
+  Coherence time: 440.8106279373169
+Number of topics = 110 complete.
+  Model time: 1057.663540840149
+  Coherence time: 434.5287878513336
+Number of topics = 115 complete.
+  Model time: 1078.8010158538818
+  Coherence time: 460.3790500164032
+Number of topics = 120 complete.
+  Model time: 1131.6853902339935
+  Coherence time: 496.98768496513367
+Number of topics = 125 complete.
+  Model time: 1179.4566760063171
+  Coherence time: 543.0640647411346
+Number of topics = 130 complete.
+  Model time: 1221.1919231414795
+  Coherence time: 524.0472178459167
+Number of topics = 140 complete.
+  Model time: 1295.089649438858
+  Coherence time: 555.4956498146057
+Number of topics = 150 complete.
+  Model time: 1453.401577949524
+  Coherence time: 620.8776035308838
+Number of topics = 175 complete.
+/apps/software/standard/core/anaconda/2019.10-py3.7/lib/python3.7/site-packages/joblib/externals/loky/process_executor.py:706: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
+  "timeout or by a memory leak.", UserWarning
+  Model time: 1580.9156591892242
+  Coherence time: 696.6353187561035
+Number of topics = 200 complete.

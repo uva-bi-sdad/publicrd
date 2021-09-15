@@ -1,0 +1,273 @@
+Iteration 0
+  Model time: 272.65757966041565
+  Coherence time: 61.4054012298584
+Number of topics = 5 complete.
+  Model time: 321.77561354637146
+  Coherence time: 74.73790240287781
+Number of topics = 10 complete.
+  Model time: 326.5840058326721
+  Coherence time: 88.25950360298157
+Number of topics = 15 complete.
+  Model time: 358.0628116130829
+  Coherence time: 113.4161729812622
+Number of topics = 20 complete.
+  Model time: 371.02712512016296
+  Coherence time: 126.12057185173035
+Number of topics = 25 complete.
+  Model time: 406.28886103630066
+  Coherence time: 140.6157157421112
+Number of topics = 30 complete.
+  Model time: 410.9520800113678
+  Coherence time: 153.96779799461365
+Number of topics = 35 complete.
+  Model time: 425.459876537323
+  Coherence time: 177.38382697105408
+Number of topics = 40 complete.
+  Model time: 449.08279037475586
+  Coherence time: 196.8609321117401
+Number of topics = 45 complete.
+  Model time: 470.621719121933
+  Coherence time: 220.00716519355774
+Number of topics = 50 complete.
+  Model time: 474.7480912208557
+  Coherence time: 229.35050082206726
+Number of topics = 55 complete.
+  Model time: 494.84252309799194
+  Coherence time: 242.1275713443756
+Number of topics = 60 complete.
+  Model time: 514.3095965385437
+  Coherence time: 267.7257981300354
+Number of topics = 65 complete.
+  Model time: 539.3487107753754
+  Coherence time: 279.67611050605774
+Number of topics = 70 complete.
+  Model time: 554.1445598602295
+  Coherence time: 321.29586601257324
+Number of topics = 75 complete.
+  Model time: 548.9110510349274
+  Coherence time: 310.11500215530396
+Number of topics = 80 complete.
+  Model time: 574.642835855484
+  Coherence time: 326.7588963508606
+Number of topics = 85 complete.
+  Model time: 581.7213671207428
+  Coherence time: 346.91935300827026
+Number of topics = 90 complete.
+  Model time: 596.754222869873
+  Coherence time: 383.7147145271301
+Number of topics = 95 complete.
+  Model time: 603.6577084064484
+  Coherence time: 373.34800124168396
+Number of topics = 100 complete.
+  Model time: 624.8050305843353
+  Coherence time: 398.8414635658264
+Number of topics = 105 complete.
+  Model time: 640.7486715316772
+  Coherence time: 436.57267117500305
+Number of topics = 110 complete.
+  Model time: 652.3357381820679
+  Coherence time: 409.45334362983704
+Number of topics = 115 complete.
+  Model time: 649.0939965248108
+  Coherence time: 427.0228703022003
+Number of topics = 120 complete.
+  Model time: 676.4609944820404
+  Coherence time: 478.81286907196045
+Number of topics = 125 complete.
+  Model time: 708.1435143947601
+  Coherence time: 459.7692058086395
+Number of topics = 130 complete.
+  Model time: 731.9122450351715
+  Coherence time: 466.75879096984863
+Number of topics = 140 complete.
+  Model time: 764.2887470722198
+  Coherence time: 508.33841252326965
+Number of topics = 150 complete.
+  Model time: 863.8644435405731
+  Coherence time: 557.096218585968
+Number of topics = 175 complete.
+  Model time: 925.2082073688507
+  Coherence time: 677.1103529930115
+Number of topics = 200 complete.
+Iteration 1
+  Model time: 276.14275574684143
+  Coherence time: 61.31999111175537
+Number of topics = 5 complete.
+  Model time: 317.3392496109009
+  Coherence time: 74.31765294075012
+Number of topics = 10 complete.
+  Model time: 336.30364298820496
+  Coherence time: 90.01259326934814
+Number of topics = 15 complete.
+  Model time: 353.21870732307434
+  Coherence time: 106.87057399749756
+Number of topics = 20 complete.
+  Model time: 377.3593382835388
+  Coherence time: 116.47393774986267
+Number of topics = 25 complete.
+  Model time: 392.75847244262695
+  Coherence time: 139.8213448524475
+Number of topics = 30 complete.
+  Model time: 404.73445415496826
+  Coherence time: 159.19987797737122
+Number of topics = 35 complete.
+  Model time: 417.70070791244507
+  Coherence time: 182.12552309036255
+Number of topics = 40 complete.
+  Model time: 445.9853398799896
+  Coherence time: 189.77679109573364
+Number of topics = 45 complete.
+  Model time: 466.3947994709015
+  Coherence time: 214.7898452281952
+Number of topics = 50 complete.
+  Model time: 480.0751483440399
+  Coherence time: 219.1796691417694
+Number of topics = 55 complete.
+  Model time: 492.43635272979736
+  Coherence time: 252.14331579208374
+Number of topics = 60 complete.
+  Model time: 520.6438646316528
+  Coherence time: 257.5668523311615
+Number of topics = 65 complete.
+  Model time: 544.0551116466522
+  Coherence time: 261.9135534763336
+Number of topics = 70 complete.
+  Model time: 559.4918081760406
+  Coherence time: 296.56464552879333
+Number of topics = 75 complete.
+  Model time: 562.1440422534943
+  Coherence time: 306.54368472099304
+Number of topics = 80 complete.
+  Model time: 578.8501396179199
+  Coherence time: 343.59156918525696
+Number of topics = 85 complete.
+  Model time: 578.5355184078217
+  Coherence time: 351.480491399765
+Number of topics = 90 complete.
+  Model time: 602.4428012371063
+  Coherence time: 332.3707284927368
+Number of topics = 95 complete.
+  Model time: 602.0365169048309
+  Coherence time: 380.1417033672333
+Number of topics = 100 complete.
+  Model time: 623.1504762172699
+  Coherence time: 402.8013072013855
+Number of topics = 105 complete.
+  Model time: 633.5395815372467
+  Coherence time: 396.47395157814026
+Number of topics = 110 complete.
+  Model time: 644.1615660190582
+  Coherence time: 410.5648069381714
+Number of topics = 115 complete.
+  Model time: 664.3212440013885
+  Coherence time: 442.2039976119995
+Number of topics = 120 complete.
+  Model time: 676.4943532943726
+  Coherence time: 473.62316489219666
+Number of topics = 125 complete.
+  Model time: 716.776175737381
+  Coherence time: 444.4360098838806
+Number of topics = 130 complete.
+  Model time: 727.8436987400055
+  Coherence time: 488.69955015182495
+Number of topics = 140 complete.
+  Model time: 768.1859707832336
+  Coherence time: 510.56824707984924
+Number of topics = 150 complete.
+  Model time: 854.1942582130432
+  Coherence time: 600.4537360668182
+Number of topics = 175 complete.
+  Model time: 922.7664165496826
+  Coherence time: 643.6625838279724
+Number of topics = 200 complete.
+Iteration 2
+  Model time: 292.51122403144836
+  Coherence time: 59.0774405002594
+Number of topics = 5 complete.
+  Model time: 323.56835985183716
+  Coherence time: 75.65808749198914
+Number of topics = 10 complete.
+  Model time: 330.96449184417725
+  Coherence time: 89.37492609024048
+Number of topics = 15 complete.
+  Model time: 360.55845642089844
+  Coherence time: 108.53557419776917
+Number of topics = 20 complete.
+  Model time: 377.3206567764282
+  Coherence time: 124.99631929397583
+Number of topics = 25 complete.
+  Model time: 395.97133588790894
+  Coherence time: 143.87220001220703
+Number of topics = 30 complete.
+  Model time: 423.3364896774292
+  Coherence time: 162.7551131248474
+Number of topics = 35 complete.
+  Model time: 422.57473516464233
+  Coherence time: 183.2041835784912
+Number of topics = 40 complete.
+  Model time: 444.59074783325195
+  Coherence time: 193.87966322898865
+Number of topics = 45 complete.
+  Model time: 460.14028453826904
+  Coherence time: 196.25895428657532
+Number of topics = 50 complete.
+  Model time: 479.9674742221832
+  Coherence time: 235.04383850097656
+Number of topics = 55 complete.
+  Model time: 498.00589323043823
+  Coherence time: 242.33904719352722
+Number of topics = 60 complete.
+  Model time: 511.5525007247925
+  Coherence time: 265.7255349159241
+Number of topics = 65 complete.
+  Model time: 547.1791865825653
+  Coherence time: 309.57234239578247
+Number of topics = 70 complete.
+  Model time: 552.7056250572205
+  Coherence time: 290.76518511772156
+Number of topics = 75 complete.
+  Model time: 550.0375285148621
+  Coherence time: 302.71508288383484
+Number of topics = 80 complete.
+  Model time: 582.5922384262085
+  Coherence time: 308.54582595825195
+Number of topics = 85 complete.
+  Model time: 588.0131824016571
+  Coherence time: 363.1758015155792
+Number of topics = 90 complete.
+  Model time: 596.2771368026733
+  Coherence time: 327.4404399394989
+Number of topics = 95 complete.
+  Model time: 610.3636755943298
+  Coherence time: 370.71553444862366
+Number of topics = 100 complete.
+  Model time: 628.9788808822632
+  Coherence time: 391.0219306945801
+Number of topics = 105 complete.
+  Model time: 635.8731074333191
+  Coherence time: 425.3647155761719
+Number of topics = 110 complete.
+  Model time: 645.0348525047302
+  Coherence time: 408.3565821647644
+Number of topics = 115 complete.
+  Model time: 645.1352269649506
+  Coherence time: 420.82760977745056
+Number of topics = 120 complete.
+  Model time: 679.6712086200714
+  Coherence time: 437.7152256965637
+Number of topics = 125 complete.
+  Model time: 706.829244852066
+  Coherence time: 474.7830605506897
+Number of topics = 130 complete.
+  Model time: 741.2812678813934
+  Coherence time: 499.45990920066833
+Number of topics = 140 complete.
+  Model time: 770.8587367534637
+  Coherence time: 498.7630853652954
+Number of topics = 150 complete.
+  Model time: 862.198495388031
+  Coherence time: 580.4765522480011
+Number of topics = 175 complete.
+  Model time: 920.6855044364929
+  Coherence time: 616.4041776657104
+Number of topics = 200 complete.
