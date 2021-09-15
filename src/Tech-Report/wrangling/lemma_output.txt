@@ -1,0 +1,17 @@
+/home/kjl5t/.local/lib/python3.8/site-packages/gensim/similarities/__init__.py:15: UserWarning: The gensim.similarities.levenshtein submodule is disabled, because the optional Levenshtein package <https://pypi.org/project/python-Levenshtein/> is unavailable. Install Levenhstein (e.g. `pip install python-Levenshtein`) to suppress this warning.
+  warnings.warn(msg)
+2021-09-13 13:56:17 INFO: Loading these models for language: en (English):
+=======================
+| Processor | Package |
+-----------------------
+| tokenize  | ewt     |
+| pos       | ewt     |
+| lemma     | ewt     |
+=======================
+
+2021-09-13 13:56:17 INFO: Use device: gpu
+2021-09-13 13:56:17 INFO: Loading: tokenize
+2021-09-13 13:56:20 INFO: Loading: pos
+2021-09-13 13:56:21 INFO: Loading: lemma
+2021-09-13 13:56:21 INFO: Done loading processors!
+time: 13753.854360580444
