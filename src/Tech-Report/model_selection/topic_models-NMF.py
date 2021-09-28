@@ -6,13 +6,12 @@ import time
 from sklearn.decomposition import NMF
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-
 # data needed for coherence calculation
 
 # import entire dataset
 f = open('coherence_vars.sav', 'rb')
 
-[id2word, docs] = pickle.load(f)
+[id2word, docs] = pickle.load(f)  # don't need corpus in new version
 f.close()
 
 print("data ingested--------------------------", flush = True)
@@ -60,6 +59,13 @@ tf_idf = tfidf_vectorizer.fit_transform(text)
 print("doc term matrix computed------------", flush = True)
 
 
+# run once so start up time isn't factored into first iteration time
+nmf_model = NMF(n_components=1, random_state = 0)
+nmf_model.fit_transform(tf_idf)
+
+print("model loop beginning-----------", flush = True)
+
+
 # function adapted from https://datascienceplus.com/evaluation-of-topic-modeling-topic-coherence/
 
 def nmf_models(doc_term_matrix, n_topics, vectorizer, rand_start):
@@ -101,10 +107,10 @@ def nmf_models(doc_term_matrix, n_topics, vectorizer, rand_start):
 # code copied from https://datascienceplus.com/evaluation-of-topic-modeling-topic-coherence/
 # minor alterations made
 
-n_topics = [5,10] #list(range(5,131,5)) + [140, 150, 175, 200]
+n_topics = list(range(5,131,5)) + [140, 150, 175, 200]
 num_runs = 1
 
-batch = 0
+batch = 4
 
 col_names = [f"iteration {i+batch}" for i in range(num_runs)]
 nmf_t = pd.DataFrame(index = n_topics, columns = col_names)
@@ -123,5 +129,5 @@ for i in range(num_runs):
 
 # save results 
 
-nmf_t.to_pickle("./results/NMF/nmf_t0.pkl")
-nmf_topics.to_pickle("./results/NMF/nmf_topics0.pkl")
+nmf_t.to_pickle("./results/NMF/nmf_t4.pkl")
+nmf_topics.to_pickle("./results/NMF/nmf_topics4.pkl")
