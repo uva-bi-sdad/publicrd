@@ -6,21 +6,35 @@ library(dplyr)
 options(scipen=999) # prevent scientific notation for slopes in df
 
 #
-# Pandemics table ----------------------------------------------------------
+# Pandemics tables ----------------------------------------------------------
 #
 
 df <- read_csv("pan_topics.csv")
 
-df <- df %>%
-  arrange(desc(Slope))
+# create table with only labels and topic words
 
-df$Slope <- round(df$Slope, 6)
+df1 <- df %>%
+  select(Label, `Topic Words`) 
+
+# change "_" to "\_" for outputting an actual underscore in TeX and not going into math mode
+df1$`Topic Words` <- gsub("_", "\\\\_", df1$`Topic Words`)
+
+write.table(df1, file = "pan-topics-table.txt", quote = FALSE, sep = " & ", eol = " \\\\ \\hline ", 
+            row.names = FALSE)
+
+
+# create table with labels, top words, slope and p-value
+
+df$Slopex100 <- round(df$Slopex100, 6)
+df$`p-value` <- round(df$`p-value`, 6)
 
 # change "_" to "\_" for outputting an actual underscore in TeX and not going into math mode
 df$`Topic Words` <- gsub("_", "\\\\_", df$`Topic Words`)
 
-write.table(df, file = "pan-topics-table.txt", quote = FALSE, sep = " & ", eol = " \\\\ \\hline ", 
-            row.names = TRUE)
+write.table(df, file = "pan-table.txt", quote = FALSE, sep = " & ", eol = " \\\\ \\hline ", 
+            row.names = FALSE)
+
+
 
 
 #
@@ -29,16 +43,28 @@ write.table(df, file = "pan-topics-table.txt", quote = FALSE, sep = " & ", eol =
 
 df <- read_csv("cor_topics.csv")
 
-df <- df %>%
-  arrange(desc(Slope))
+# create table with only labels and topic words
 
-df$Slope <- round(df$Slope, 6)
+df1 <- df %>%
+  select(Label, `Topic Words`) 
+
+# change "_" to "\_" for outputting an actual underscore in TeX and not going into math mode
+df1$`Topic Words` <- gsub("_", "\\\\_", df1$`Topic Words`)
+
+write.table(df1, file = "cor-topics-table.txt", quote = FALSE, sep = " & ", eol = " \\\\ \\hline ", 
+            row.names = FALSE)
+
+
+# create table with labels, top words, slope and p-value
+
+df$Slopex100 <- round(df$Slopex100, 6)
+df$`p-value` <- round(df$`p-value`, 6)
 
 # change "_" to "\_" for outputting an actual underscore in TeX and not going into math mode
 df$`Topic Words` <- gsub("_", "\\\\_", df$`Topic Words`)
 
-write.table(df, file = "cor-topics-table.txt", quote = FALSE, sep = " & ", eol = " \\\\ \\hline ", 
-            row.names = TRUE)
+write.table(df, file = "cor-table.txt", quote = FALSE, sep = " & ", eol = " \\\\ \\hline ", 
+            row.names = FALSE)
 
 
 
@@ -92,7 +118,7 @@ write.table(df, file = "NMF-topics-results.txt", quote = FALSE, sep = " & ", eol
 # Table of NMF topic results - lists topic number and top 5 words --------------------------------------
 #
 
-df <- read_csv("CSVs/full_topics_df.csv")
+df <- read_csv("CSVs/nmf_100_results.csv")
 
 
 # cut down list of words to top 5 (not 10)
@@ -101,7 +127,10 @@ df$`Top Five Terms` <- NA
 
 for(i in 1:nrow(df))
 {
-  wds <- df$`Topic Words`[i]
+  wds <- df$`topic_words`[i]
+  wds <- gsub('\'', '', wds)
+  wds <- gsub('\\[', '', wds)
+  wds <- gsub(']', '', wds)
   wds <-strsplit(wds, ", ")
   
   top5 <- wds[[1]][1:5]
@@ -117,9 +146,9 @@ df <- df %>%
 
 df$Label <- NA
 
-for(i in 1:75)
+for(i in 1:nrow(df))
 {
-  df$Label[i] <- paste0("FR", i)
+  df$Label[i] <- paste0("X", i)
 }
 
 
@@ -129,9 +158,42 @@ df <- df %>%
 # change "_" to "\_" for outputting an actual underscore in TeX and not going into math mode
 df$`Top Five Terms` <- gsub("_", "\\\\_", df$`Top Five Terms`)
 
-write.table(df, file = "nmf-75-topics-table.txt", quote = FALSE, sep = " & ", eol = " \\\\ \\hline ", 
+write.table(df, file = "tables/nmf-100-topics-table.txt", quote = FALSE, sep = " & ", eol = " \\\\ \\hline ", 
             row.names = FALSE)
 
 
 
+#
+# Pandemics TM table ----------------------------------------------------------
+#
 
+df <- read_csv("TM_pan_topics.csv")
+
+# create table with only labels and topic words
+
+df1 <- df %>%
+  select(`Topic Words`) 
+
+# change "_" to "\_" for outputting an actual underscore in TeX and not going into math mode
+df1$`Topic Words` <- gsub("_", "\\\\_", df1$`Topic Words`)
+
+write.table(df1, file = "TM-pan-topics-table.txt", quote = FALSE, sep = " & ", eol = " \\\\ \\hline ", 
+            row.names = FALSE)
+
+
+#
+# Coronavirus TM table ----------------------------------------------------------
+#
+
+df <- read_csv("TM_cor_topics.csv")
+
+# create table with only labels and topic words
+
+df1 <- df %>%
+  select(`Topic Words`) 
+
+# change "_" to "\_" for outputting an actual underscore in TeX and not going into math mode
+df1$`Topic Words` <- gsub("_", "\\\\_", df1$`Topic Words`)
+
+write.table(df1, file = "TM-cor-topics-table.txt", quote = FALSE, sep = " & ", eol = " \\\\ \\hline ", 
+            row.names = FALSE)
