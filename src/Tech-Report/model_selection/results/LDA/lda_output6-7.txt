@@ -1,0 +1,125 @@
+data ingested--------------------------
+doc term matrix computed------------
+model loop beginning-----------
+Iteration 0
+  Model time: 249.25585651397705
+Number of topics = 5 complete.
+  Model time: 318.1930396556854
+Number of topics = 10 complete.
+  Model time: 340.8068220615387
+Number of topics = 15 complete.
+  Model time: 361.5607533454895
+Number of topics = 20 complete.
+  Model time: 375.34672713279724
+Number of topics = 25 complete.
+  Model time: 390.87203574180603
+Number of topics = 30 complete.
+  Model time: 409.0005280971527
+Number of topics = 35 complete.
+  Model time: 426.56653118133545
+Number of topics = 40 complete.
+  Model time: 449.32625246047974
+Number of topics = 45 complete.
+  Model time: 461.43097448349
+Number of topics = 50 complete.
+  Model time: 477.89368653297424
+Number of topics = 55 complete.
+  Model time: 499.3814101219177
+Number of topics = 60 complete.
+  Model time: 518.337340593338
+Number of topics = 65 complete.
+  Model time: 528.5954911708832
+Number of topics = 70 complete.
+  Model time: 554.1369187831879
+Number of topics = 75 complete.
+  Model time: 569.725031375885
+Number of topics = 80 complete.
+  Model time: 585.2136158943176
+Number of topics = 85 complete.
+  Model time: 603.087470293045
+Number of topics = 90 complete.
+  Model time: 620.3658695220947
+Number of topics = 95 complete.
+  Model time: 641.1108384132385
+Number of topics = 100 complete.
+  Model time: 661.7152004241943
+Number of topics = 105 complete.
+  Model time: 676.0767476558685
+Number of topics = 110 complete.
+  Model time: 707.6806519031525
+Number of topics = 115 complete.
+  Model time: 710.8909468650818
+Number of topics = 120 complete.
+  Model time: 740.9301156997681
+Number of topics = 125 complete.
+  Model time: 755.1822273731232
+Number of topics = 130 complete.
+  Model time: 796.9365589618683
+Number of topics = 140 complete.
+  Model time: 846.0428338050842
+Number of topics = 150 complete.
+  Model time: 949.4281799793243
+Number of topics = 175 complete.
+  Model time: 1025.4027261734009
+Number of topics = 200 complete.
+Iteration 1
+  Model time: 266.1263618469238
+Number of topics = 5 complete.
+  Model time: 331.5793733596802
+Number of topics = 10 complete.
+  Model time: 340.7238624095917
+Number of topics = 15 complete.
+  Model time: 353.4219410419464
+Number of topics = 20 complete.
+  Model time: 371.05907583236694
+Number of topics = 25 complete.
+  Model time: 393.31525468826294
+Number of topics = 30 complete.
+  Model time: 406.2334086894989
+Number of topics = 35 complete.
+  Model time: 420.97587847709656
+Number of topics = 40 complete.
+  Model time: 434.14657974243164
+Number of topics = 45 complete.
+  Model time: 454.8077607154846
+Number of topics = 50 complete.
+  Model time: 476.2474412918091
+Number of topics = 55 complete.
+  Model time: 495.30405592918396
+Number of topics = 60 complete.
+  Model time: 513.7857329845428
+Number of topics = 65 complete.
+  Model time: 533.572751045227
+Number of topics = 70 complete.
+  Model time: 546.7696506977081
+Number of topics = 75 complete.
+  Model time: 562.2918255329132
+Number of topics = 80 complete.
+  Model time: 588.235906124115
+Number of topics = 85 complete.
+  Model time: 594.146253824234
+Number of topics = 90 complete.
+  Model time: 623.0177869796753
+Number of topics = 95 complete.
+  Model time: 639.6911566257477
+Number of topics = 100 complete.
+  Model time: 658.3196897506714
+Number of topics = 105 complete.
+  Model time: 678.1342630386353
+Number of topics = 110 complete.
+  Model time: 700.7684879302979
+Number of topics = 115 complete.
+  Model time: 719.6254353523254
+Number of topics = 120 complete.
+  Model time: 739.8878540992737
+Number of topics = 125 complete.
+  Model time: 754.6001362800598
+Number of topics = 130 complete.
+  Model time: 791.4407646656036
+Number of topics = 140 complete.
+  Model time: 832.5299246311188
+Number of topics = 150 complete.
+  Model time: 940.0357937812805
+Number of topics = 175 complete.
+  Model time: 1031.1699900627136
+Number of topics = 200 complete.

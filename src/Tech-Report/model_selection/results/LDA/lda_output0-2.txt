@@ -1,0 +1,186 @@
+data ingested--------------------------
+doc term matrix computed------------
+model loop beginning-----------
+Iteration 0
+  Model time: 273.25709295272827
+Number of topics = 5 complete.
+  Model time: 316.29967880249023
+Number of topics = 10 complete.
+  Model time: 336.2116153240204
+Number of topics = 15 complete.
+  Model time: 355.10472345352173
+Number of topics = 20 complete.
+  Model time: 386.47536993026733
+Number of topics = 25 complete.
+  Model time: 393.3878581523895
+Number of topics = 30 complete.
+  Model time: 413.72372913360596
+Number of topics = 35 complete.
+  Model time: 427.91024518013
+Number of topics = 40 complete.
+  Model time: 445.007954120636
+Number of topics = 45 complete.
+  Model time: 464.1243476867676
+Number of topics = 50 complete.
+  Model time: 480.9549458026886
+Number of topics = 55 complete.
+  Model time: 505.305780172348
+Number of topics = 60 complete.
+  Model time: 521.8860077857971
+Number of topics = 65 complete.
+  Model time: 548.4241690635681
+Number of topics = 70 complete.
+  Model time: 566.7295134067535
+Number of topics = 75 complete.
+  Model time: 597.056095123291
+Number of topics = 80 complete.
+  Model time: 619.1497049331665
+Number of topics = 85 complete.
+  Model time: 674.7822563648224
+Number of topics = 90 complete.
+  Model time: 708.6667065620422
+Number of topics = 95 complete.
+  Model time: 727.436785697937
+Number of topics = 100 complete.
+  Model time: 761.413202047348
+Number of topics = 105 complete.
+  Model time: 746.1746301651001
+Number of topics = 110 complete.
+  Model time: 813.0293078422546
+Number of topics = 115 complete.
+  Model time: 728.2047517299652
+Number of topics = 120 complete.
+  Model time: 781.4002740383148
+Number of topics = 125 complete.
+  Model time: 823.8687479496002
+Number of topics = 130 complete.
+  Model time: 883.6386227607727
+Number of topics = 140 complete.
+  Model time: 942.9960112571716
+Number of topics = 150 complete.
+  Model time: 1092.6221339702606
+Number of topics = 175 complete.
+  Model time: 1249.398089170456
+Number of topics = 200 complete.
+Iteration 1
+  Model time: 264.3724946975708
+Number of topics = 5 complete.
+  Model time: 326.58857583999634
+Number of topics = 10 complete.
+  Model time: 323.32067704200745
+Number of topics = 15 complete.
+  Model time: 354.1354823112488
+Number of topics = 20 complete.
+  Model time: 377.464257478714
+Number of topics = 25 complete.
+  Model time: 402.03218698501587
+Number of topics = 30 complete.
+  Model time: 414.2497696876526
+Number of topics = 35 complete.
+  Model time: 426.8546802997589
+Number of topics = 40 complete.
+  Model time: 456.0093426704407
+Number of topics = 45 complete.
+  Model time: 471.6162021160126
+Number of topics = 50 complete.
+  Model time: 492.33839440345764
+Number of topics = 55 complete.
+  Model time: 512.2314789295197
+Number of topics = 60 complete.
+  Model time: 532.1576693058014
+Number of topics = 65 complete.
+  Model time: 554.7305808067322
+Number of topics = 70 complete.
+  Model time: 594.1955063343048
+Number of topics = 75 complete.
+  Model time: 614.6038975715637
+Number of topics = 80 complete.
+  Model time: 658.5555508136749
+Number of topics = 85 complete.
+  Model time: 685.4005029201508
+Number of topics = 90 complete.
+  Model time: 743.5364751815796
+Number of topics = 95 complete.
+  Model time: 772.7836124897003
+Number of topics = 100 complete.
+  Model time: 819.8379516601562
+Number of topics = 105 complete.
+  Model time: 853.6010246276855
+Number of topics = 110 complete.
+  Model time: 847.5131068229675
+Number of topics = 115 complete.
+  Model time: 916.0424354076385
+Number of topics = 120 complete.
+  Model time: 950.1780490875244
+Number of topics = 125 complete.
+  Model time: 787.366466999054
+Number of topics = 130 complete.
+  Model time: 846.069486618042
+Number of topics = 140 complete.
+  Model time: 915.277036190033
+Number of topics = 150 complete.
+  Model time: 1061.2586498260498
+Number of topics = 175 complete.
+  Model time: 1205.3317472934723
+Number of topics = 200 complete.
+Iteration 2
+  Model time: 252.2445831298828
+Number of topics = 5 complete.
+  Model time: 313.12938952445984
+Number of topics = 10 complete.
+  Model time: 343.9736273288727
+Number of topics = 15 complete.
+  Model time: 359.14594078063965
+Number of topics = 20 complete.
+  Model time: 372.3516902923584
+Number of topics = 25 complete.
+  Model time: 392.3830864429474
+Number of topics = 30 complete.
+  Model time: 406.7451100349426
+Number of topics = 35 complete.
+  Model time: 427.6563365459442
+Number of topics = 40 complete.
+  Model time: 444.6968069076538
+Number of topics = 45 complete.
+  Model time: 472.38906836509705
+Number of topics = 50 complete.
+  Model time: 494.5014982223511
+Number of topics = 55 complete.
+  Model time: 511.20167088508606
+Number of topics = 60 complete.
+  Model time: 549.1210448741913
+Number of topics = 65 complete.
+  Model time: 560.4140329360962
+Number of topics = 70 complete.
+  Model time: 588.6643664836884
+Number of topics = 75 complete.
+  Model time: 630.2090270519257
+Number of topics = 80 complete.
+  Model time: 636.479177236557
+Number of topics = 85 complete.
+  Model time: 677.9546360969543
+Number of topics = 90 complete.
+  Model time: 689.0877289772034
+Number of topics = 95 complete.
+  Model time: 746.7324025630951
+Number of topics = 100 complete.
+  Model time: 795.8314564228058
+Number of topics = 105 complete.
+  Model time: 829.1067924499512
+Number of topics = 110 complete.
+  Model time: 876.0651843547821
+Number of topics = 115 complete.
+  Model time: 918.6935164928436
+Number of topics = 120 complete.
+  Model time: 952.4125409126282
+Number of topics = 125 complete.
+  Model time: 1012.7684044837952
+Number of topics = 130 complete.
+  Model time: 936.8204860687256
+Number of topics = 140 complete.
+  Model time: 908.6128866672516
+Number of topics = 150 complete.
+  Model time: 1054.678997516632
+Number of topics = 175 complete.
+  Model time: 1368.2990186214447
+Number of topics = 200 complete.

@@ -1,0 +1,62 @@
+data ingested--------------------------
+Iteration 0
+  Coherence time: 70.87524580955505
+Number of topics = 5 complete.
+  Coherence time: 90.61582732200623
+Number of topics = 10 complete.
+  Coherence time: 105.69446969032288
+Number of topics = 15 complete.
+  Coherence time: 130.10986328125
+Number of topics = 20 complete.
+  Coherence time: 152.7352635860443
+Number of topics = 25 complete.
+  Coherence time: 153.44626903533936
+Number of topics = 30 complete.
+  Coherence time: 182.9454128742218
+Number of topics = 35 complete.
+  Coherence time: 205.34177899360657
+Number of topics = 40 complete.
+  Coherence time: 226.25493097305298
+Number of topics = 45 complete.
+  Coherence time: 238.80427861213684
+Number of topics = 50 complete.
+  Coherence time: 264.6020030975342
+Number of topics = 55 complete.
+  Coherence time: 277.7058382034302
+Number of topics = 60 complete.
+  Coherence time: 305.8598425388336
+Number of topics = 65 complete.
+  Coherence time: 325.6160933971405
+Number of topics = 70 complete.
+  Coherence time: 345.9116656780243
+Number of topics = 75 complete.
+  Coherence time: 363.4894073009491
+Number of topics = 80 complete.
+  Coherence time: 369.96895599365234
+Number of topics = 85 complete.
+  Coherence time: 395.7504012584686
+Number of topics = 90 complete.
+  Coherence time: 432.7087049484253
+Number of topics = 95 complete.
+  Coherence time: 430.12206196784973
+Number of topics = 100 complete.
+  Coherence time: 476.4638321399689
+Number of topics = 105 complete.
+  Coherence time: 502.6701123714447
+Number of topics = 110 complete.
+  Coherence time: 508.90815711021423
+Number of topics = 115 complete.
+  Coherence time: 548.738935470581
+Number of topics = 120 complete.
+  Coherence time: 539.1278734207153
+Number of topics = 125 complete.
+  Coherence time: 537.8726634979248
+Number of topics = 130 complete.
+  Coherence time: 626.8098030090332
+Number of topics = 140 complete.
+  Coherence time: 644.9651114940643
+Number of topics = 150 complete.
+  Coherence time: 768.7207388877869
+Number of topics = 175 complete.
+  Coherence time: 824.2119100093842
+Number of topics = 200 complete.
