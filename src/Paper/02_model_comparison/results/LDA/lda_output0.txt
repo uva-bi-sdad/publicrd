@@ -1,0 +1,24 @@
+data ingested--------------------------
+doc term matrix computed------------
+model loop beginning-----------
+Iteration 0
+  Model time: 752.5394937992096
+Number of topics = 5 complete.
+  Model time: 980.9293565750122
+Number of topics = 10 complete.
+  Model time: 1010.9668052196503
+Number of topics = 15 complete.
+  Model time: 1058.9431457519531
+Number of topics = 20 complete.
+  Model time: 1149.526965379715
+Number of topics = 25 complete.
+  Model time: 1167.401733160019
+Number of topics = 30 complete.
+  Model time: 1208.6960904598236
+Number of topics = 35 complete.
+  Model time: 1290.9296419620514
+Number of topics = 40 complete.
+  Model time: 1337.2021811008453
+Number of topics = 45 complete.
+  Model time: 1404.1082587242126
+Number of topics = 50 complete.

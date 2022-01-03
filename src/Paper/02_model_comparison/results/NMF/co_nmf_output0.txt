@@ -1,0 +1,22 @@
+data ingested--------------------------
+Iteration 0
+  Coherence time: 134.90707993507385
+Number of topics = 5 complete.
+  Coherence time: 177.58002281188965
+Number of topics = 10 complete.
+  Coherence time: 207.16178560256958
+Number of topics = 15 complete.
+  Coherence time: 256.6326322555542
+Number of topics = 20 complete.
+  Coherence time: 310.1565315723419
+Number of topics = 25 complete.
+  Coherence time: 344.8092613220215
+Number of topics = 30 complete.
+  Coherence time: 393.10435581207275
+Number of topics = 35 complete.
+  Coherence time: 446.51702094078064
+Number of topics = 40 complete.
+  Coherence time: 475.4438555240631
+Number of topics = 45 complete.
+  Coherence time: 544.8167090415955
+Number of topics = 50 complete.
