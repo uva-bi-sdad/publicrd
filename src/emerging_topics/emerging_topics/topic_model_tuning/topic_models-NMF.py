@@ -122,10 +122,10 @@ def nmf_metrics(doc_term_matrix, n_topics, vectorizer, corpus, id2word, docs, ra
 # code copied from https://datascienceplus.com/evaluation-of-topic-modeling-topic-coherence/
 # minor alterations made
 
-n_topics = list(range(5,131,5)) + [140, 150, 175, 200]
-num_runs = 2
+n_topics = [5,10] #list(range(5,131,5)) + [140, 150, 175, 200]
+num_runs = 1 #2
 
-batch = 6
+batch = 0 #6
 
 col_names = [f"iteration {i+batch}" for i in range(num_runs)]
 nmf_c = pd.DataFrame(index = n_topics, columns = col_names)
@@ -144,4 +144,4 @@ for i in range(num_runs):
 
 # save results 
 
-nmf_c.to_pickle("./results/final_10_runs/nmf_c6-7.pkl")
+#nmf_c.to_pickle("./results/final_10_runs/nmf_c6-7.pkl")

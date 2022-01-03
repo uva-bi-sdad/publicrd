@@ -6,7 +6,7 @@ library(stringr)
 library(dplyr)
 library(latex2exp)
 
-df <- read_csv("full_nmf_results.csv")
+df <- read_csv("CSVs/nmf_100_results.csv")
 
 # add in topic ranking by percent docs containing topic, largest percent = 1
 # not using this anymore - labeling by FR1, FR2, etc. 
@@ -59,9 +59,9 @@ df <- df %>%
 
 df$topic_label <- ""
 
-for(i in 1:75)
+for(i in 1:nrow(df))
 {
-  df$topic_label[i] <- paste0("FR", i)
+  df$topic_label[i] <- paste0("A", i)
 }
 
 
@@ -90,7 +90,7 @@ text_col <- ifelse(p_df$group == "most", "black", "black")
 ggplot(data=p_df, aes(x=percent_docs_containing_topic, y=top_5_words)) +
   geom_segment(aes(x=0, y=top_5_words , xend=percent_docs_containing_topic, yend=top_5_words, color=group), size=2) +
   geom_point(aes(color=group), size=4) + #color="blue", size=1, alpha=1) +
-  geom_text(aes(x = -2.2, label=topic_label)) + # size=4) +
+  geom_text(aes(x = -3, label=topic_label)) + # size=4) +
   scale_color_manual(values=c("navy", "orange")) +
   #xlim(-3,52) +
   theme_minimal() +
