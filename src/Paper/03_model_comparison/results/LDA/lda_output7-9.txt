@@ -1,0 +1,66 @@
+data ingested--------------------------
+doc term matrix computed------------
+model loop beginning-----------
+Iteration 0
+  Model time: 435.9321720600128
+Number of topics = 5 complete.
+  Model time: 551.3464908599854
+Number of topics = 10 complete.
+  Model time: 583.455644607544
+Number of topics = 15 complete.
+  Model time: 624.8026423454285
+Number of topics = 20 complete.
+  Model time: 654.9835484027863
+Number of topics = 25 complete.
+  Model time: 701.7080984115601
+Number of topics = 30 complete.
+  Model time: 738.4849412441254
+Number of topics = 35 complete.
+  Model time: 741.1583435535431
+Number of topics = 40 complete.
+  Model time: 814.0575332641602
+Number of topics = 45 complete.
+  Model time: 813.6828393936157
+Number of topics = 50 complete.
+Iteration 1
+  Model time: 437.5973620414734
+Number of topics = 5 complete.
+  Model time: 567.1177020072937
+Number of topics = 10 complete.
+  Model time: 590.1270396709442
+Number of topics = 15 complete.
+  Model time: 616.5982823371887
+Number of topics = 20 complete.
+  Model time: 663.821653842926
+Number of topics = 25 complete.
+  Model time: 664.762570142746
+Number of topics = 30 complete.
+  Model time: 726.3039176464081
+Number of topics = 35 complete.
+  Model time: 742.8266885280609
+Number of topics = 40 complete.
+  Model time: 797.2110695838928
+Number of topics = 45 complete.
+  Model time: 845.2754418849945
+Number of topics = 50 complete.
+Iteration 2
+  Model time: 433.93520188331604
+Number of topics = 5 complete.
+  Model time: 535.6200890541077
+Number of topics = 10 complete.
+  Model time: 566.9171390533447
+Number of topics = 15 complete.
+  Model time: 613.742041349411
+Number of topics = 20 complete.
+  Model time: 635.2271888256073
+Number of topics = 25 complete.
+  Model time: 691.421715259552
+Number of topics = 30 complete.
+  Model time: 754.729724407196
+Number of topics = 35 complete.
+  Model time: 780.1548986434937
+Number of topics = 40 complete.
+  Model time: 812.083758354187
+Number of topics = 45 complete.
+  Model time: 834.8348088264465
+Number of topics = 50 complete.

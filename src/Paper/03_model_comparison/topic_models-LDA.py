@@ -2,9 +2,10 @@ import pandas as pd
 #import numpy as np
 import pickle
 import time
+#import gc
 
-from sklearn.decomposition import NMF
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.decomposition import LatentDirichletAllocation
+from sklearn.feature_extraction.text import CountVectorizer
 
 # data needed for coherence calculation
 
@@ -48,85 +49,96 @@ def list_topics(topic_term_dist, vectorizer, top_n=10):
     return topic_words
 
 
-# create document-term matrix - TFIDF 
+# create document-term matrix
 
 stop_wds = ['research', 'aim', 'project']  # study will be eliminated by max_df
 
-tfidf_vectorizer = TfidfVectorizer(max_df=0.6, min_df=20, lowercase=False, stop_words=stop_wds)
-tf_idf = tfidf_vectorizer.fit_transform(text)
+vectorizer = CountVectorizer(max_df=0.6, min_df=20, lowercase=False, stop_words=stop_wds)
+doc_term_matrix = vectorizer.fit_transform(text)
 
 print("doc term matrix computed------------", flush = True)
 
 
 # run once so start up time isn't factored into first iteration time
-nmf_model = NMF(n_components=1, random_state = 0)
-nmf_model.fit_transform(tf_idf)
+lda_model = LatentDirichletAllocation(n_components=1, doc_topic_prior = 1, 
+                                              topic_word_prior=0.1, n_jobs=39, random_state = 0)
+lda_model.fit_transform(doc_term_matrix)
+
+
 
 print("model loop beginning-----------", flush = True)
 
-
 # function adapted from https://datascienceplus.com/evaluation-of-topic-modeling-topic-coherence/
 
-def nmf_models(doc_term_matrix, n_topics, vectorizer, rand_start):
+def lda_models(doc_term_matrix, n_topics, vectorizer, rand_start):
     """
-    Compute NMF model, save topics list for coherence calc
+    Compute LDA model & find perplexity, save topics list for coherence calc
 
     Parameters:
     ----------
-    tf_idf
+    doc_term_matrix
     n_topics : list of number of topics
-
     """
-    
-    nmf_time = []
+
+    perplexity_values = []
+    lda_time = []
     topics_list = []
     
-    i = rand_start
+    i = rand_start 
     for num_topics in n_topics:
-
+        
         # create model
         t1 = time.time()
-        nmf_model = NMF(n_components=num_topics, random_state = i)
-        nmf_model.fit_transform(doc_term_matrix)
+        lda_model = LatentDirichletAllocation(n_components=num_topics, doc_topic_prior = 1/num_topics, 
+                                              topic_word_prior=0.1, n_jobs=39, random_state = i) 
+        lda_model.fit_transform(doc_term_matrix)
         t2 = time.time()
-        nmf_time.append(t2-t1)
-        print(f"  Model time: {t2-t1}", flush=True)
+        lda_time.append(t2-t1)
+        print(f"  Model time: {t2-t1}", flush = True)
+        
+        # compute perplexity
+        perplexity_values.append(lda_model.bound_)
         
         # create list of topics
-        topics = list_topics(nmf_model.components_, vectorizer, top_n=10)
+        topics = list_topics(lda_model.components_, vectorizer, top_n=10)
         topics_list.append(topics)
         
         # output completion message
         i = i+1
-        print('Number of topics =', num_topics, "complete.", flush=True)
+        print('Number of topics =', num_topics, "complete.", flush = True)
 
-    return nmf_time, topics_list
+    return perplexity_values, lda_time, topics_list
 
 
 # code copied from https://datascienceplus.com/evaluation-of-topic-modeling-topic-coherence/
 # minor alterations made
-
+ 
 n_topics = list(range(5,51,5))
 num_runs = 3
 
-batch = 1
+batch= 7
 
 col_names = [f"iteration {i+batch}" for i in range(num_runs)]
-nmf_t = pd.DataFrame(index = n_topics, columns = col_names)
-nmf_topics = pd.DataFrame(index = n_topics, columns = col_names)
+lda_p = pd.DataFrame(index = n_topics, columns = col_names)
+lda_t = pd.DataFrame(index = n_topics, columns = col_names)
+lda_topics = pd.DataFrame(index = n_topics, columns = col_names)
 
 for i in range(num_runs):
     
-    print(f"Iteration {i}", flush=True)
+    print(f"Iteration {i}", flush = True)
     
     # run models
-    [t, topic_terms] = nmf_models(doc_term_matrix=tf_idf, n_topics=n_topics, vectorizer=tfidf_vectorizer, rand_start = (i+batch)*len(n_topics))
+    [p, t, topic_terms] = lda_models(doc_term_matrix=doc_term_matrix, n_topics=n_topics, vectorizer=vectorizer, 
+                         rand_start = (i+batch)*len(n_topics)) 
     
     # save results
-    nmf_t[f"iteration {i+batch}"] = t
-    nmf_topics[f"iteration {i+batch}"] = topic_terms   
-
+    lda_p[f"iteration {i+batch}"] = p
+    lda_t[f"iteration {i+batch}"] = t
+    lda_topics[f"iteration {i+batch}"] = topic_terms
+       
+        
 # save results 
 
-nmf_t.to_pickle("./results/NMF/nmf_t1-3.pkl")
-nmf_topics.to_pickle("./results/NMF/nmf_topics1-3.pkl")
+lda_p.to_pickle("./results/LDA/lda_p7-9.pkl")
+lda_t.to_pickle("./results/LDA/lda_t7-9.pkl")
+lda_topics.to_pickle("./results/LDA/lda_topics7-9.pkl")

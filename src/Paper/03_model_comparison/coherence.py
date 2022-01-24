@@ -16,7 +16,7 @@ f.close()
 
 # import topics
 
-df_topics = pd.read_pickle("./results/LDA/lda_topics0.pkl")
+df_topics = pd.read_pickle("./results/NMF/nmf_topics4-6.pkl")
 nrow, ncol = df_topics.shape
 
 
@@ -29,7 +29,7 @@ print("data ingested--------------------------", flush = True)
 # calculate coherence
 
 n_topics = list(range(5,51,5))
-batch = 0
+batch = 4
 
 col_names = [f"iteration {i+batch}" for i in range(ncol)]
 co_val = pd.DataFrame(index = n_topics, columns = col_names)
@@ -63,5 +63,5 @@ for j in range(ncol):
         
 # save results 
 
-co_val.to_pickle("./results/LDA/co_lda_val0.pkl")
-co_t.to_pickle("./results/LDA/co_lda_t0.pkl")
+co_val.to_pickle("./results/NMF/co_nmf_val4-6.pkl")
+co_t.to_pickle("./results/NMF/co_nmf_t4-6.pkl")
