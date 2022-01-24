@@ -1,0 +1,86 @@
+data ingested--------------------------
+doc term matrix computed------------
+model loop beginning-----------
+Iteration 0
+  Model time: 152.77962517738342
+Number of topics = 5 complete.
+  Model time: 268.26872205734253
+Number of topics = 10 complete.
+  Model time: 493.30339217185974
+Number of topics = 15 complete.
+  Model time: 531.9563415050507
+Number of topics = 20 complete.
+  Model time: 1059.7650637626648
+Number of topics = 25 complete.
+  Model time: 1593.8259212970734
+Number of topics = 30 complete.
+  Model time: 1540.430326461792
+Number of topics = 35 complete.
+  Model time: 1133.3445281982422
+Number of topics = 40 complete.
+  Model time: 1501.716046333313
+Number of topics = 45 complete.
+  Model time: 2659.4590153694153
+Number of topics = 50 complete.
+Iteration 1
+  Model time: 163.59386682510376
+Number of topics = 5 complete.
+  Model time: 243.78742861747742
+Number of topics = 10 complete.
+  Model time: 461.3748073577881
+Number of topics = 15 complete.
+  Model time: 1022.8865058422089
+Number of topics = 20 complete.
+  Model time: 1320.3492352962494
+Number of topics = 25 complete.
+  Model time: 1553.7659039497375
+Number of topics = 30 complete.
+  Model time: 1520.0359437465668
+Number of topics = 35 complete.
+  Model time: 1625.9614560604095
+Number of topics = 40 complete.
+  Model time: 2396.2760078907013
+Number of topics = 45 complete.
+  Model time: 1695.6347873210907
+Number of topics = 50 complete.
+Iteration 2
+  Model time: 157.79335594177246
+Number of topics = 5 complete.
+  Model time: 255.55406975746155
+Number of topics = 10 complete.
+  Model time: 565.622673034668
+Number of topics = 15 complete.
+  Model time: 1046.6118879318237
+Number of topics = 20 complete.
+  Model time: 1356.8965339660645
+Number of topics = 25 complete.
+  Model time: 1583.867026090622
+Number of topics = 30 complete.
+  Model time: 1942.6659376621246
+Number of topics = 35 complete.
+  Model time: 1428.509185552597
+Number of topics = 40 complete.
+  Model time: 2521.8783819675446
+Number of topics = 45 complete.
+  Model time: 2801.9050753116608
+Number of topics = 50 complete.
+/apps/software/standard/core/anaconda/2020.11-py3.8/lib/python3.8/site-packages/sklearn/decomposition/_nmf.py:1076: ConvergenceWarning: Maximum number of iterations 200 reached. Increase it to improve convergence.
+  warnings.warn("Maximum number of iterations %d reached. Increase it to"
+/apps/software/standard/core/anaconda/2020.11-py3.8/lib/python3.8/site-packages/sklearn/decomposition/_nmf.py:1076: ConvergenceWarning: Maximum number of iterations 200 reached. Increase it to improve convergence.
+  warnings.warn("Maximum number of iterations %d reached. Increase it to"
+/apps/software/standard/core/anaconda/2020.11-py3.8/lib/python3.8/site-packages/sklearn/decomposition/_nmf.py:1076: ConvergenceWarning: Maximum number of iterations 200 reached. Increase it to improve convergence.
+  warnings.warn("Maximum number of iterations %d reached. Increase it to"
+/apps/software/standard/core/anaconda/2020.11-py3.8/lib/python3.8/site-packages/sklearn/decomposition/_nmf.py:1076: ConvergenceWarning: Maximum number of iterations 200 reached. Increase it to improve convergence.
+  warnings.warn("Maximum number of iterations %d reached. Increase it to"
+/apps/software/standard/core/anaconda/2020.11-py3.8/lib/python3.8/site-packages/sklearn/decomposition/_nmf.py:1076: ConvergenceWarning: Maximum number of iterations 200 reached. Increase it to improve convergence.
+  warnings.warn("Maximum number of iterations %d reached. Increase it to"
+/apps/software/standard/core/anaconda/2020.11-py3.8/lib/python3.8/site-packages/sklearn/decomposition/_nmf.py:1076: ConvergenceWarning: Maximum number of iterations 200 reached. Increase it to improve convergence.
+  warnings.warn("Maximum number of iterations %d reached. Increase it to"
+/apps/software/standard/core/anaconda/2020.11-py3.8/lib/python3.8/site-packages/sklearn/decomposition/_nmf.py:1076: ConvergenceWarning: Maximum number of iterations 200 reached. Increase it to improve convergence.
+  warnings.warn("Maximum number of iterations %d reached. Increase it to"
+/apps/software/standard/core/anaconda/2020.11-py3.8/lib/python3.8/site-packages/sklearn/decomposition/_nmf.py:1076: ConvergenceWarning: Maximum number of iterations 200 reached. Increase it to improve convergence.
+  warnings.warn("Maximum number of iterations %d reached. Increase it to"
+/apps/software/standard/core/anaconda/2020.11-py3.8/lib/python3.8/site-packages/sklearn/decomposition/_nmf.py:1076: ConvergenceWarning: Maximum number of iterations 200 reached. Increase it to improve convergence.
+  warnings.warn("Maximum number of iterations %d reached. Increase it to"
+/apps/software/standard/core/anaconda/2020.11-py3.8/lib/python3.8/site-packages/sklearn/decomposition/_nmf.py:1076: ConvergenceWarning: Maximum number of iterations 200 reached. Increase it to improve convergence.
+  warnings.warn("Maximum number of iterations %d reached. Increase it to"

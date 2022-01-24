@@ -4,7 +4,7 @@
 #SBATCH -t 0-20:00:00
 #SBATCH -p bii
 #SBATCH -A biocomplexity
-#SBATCH -o ./results/NMF/nmf_output1-3.txt
+#SBATCH -o ./results/NMF/nmf_output7-9.txt
 
 module load anaconda/2020.11-py3.8
 
