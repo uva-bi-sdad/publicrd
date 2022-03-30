@@ -100,17 +100,8 @@ def calc_stability_measures(num_topics, text_mat, vectorizer, num_run, n_word):
 
 
 # full corpus
-#df = pd.read_pickle("../dspg20RnD/data/final/final_dataset_7-20.pkl")
-#df = pd.read_pickle("/project/biocomplexity/sdad/projects_data/ncses/prd/Tech-Report/FR_meta_and_final_tokens_21SEPT14.pkl")
-df = pd.read_pickle("/project/biocomplexity/sdad/projects_data/ncses/prd/Paper/FR_meta_and_final_tokens_23DEC21.pkl")
+df = pd.read_pickle("../../../prd/Paper/FR_meta_and_final_tokens_23DEC21.pkl")
 df.reset_index(inplace = True, drop = True)
-
-# input needed for LDA, NMF (all from Scikit-Learn) is one string per document (not a list of strings)
-#text = []
-#docs = df["final_tokens"]
-
-#for abstract in docs:
-#    text.append(" ".join(abstract))
     
 text = df["final_tokens"]
     
@@ -120,17 +111,10 @@ tfidf_vectorizer = TfidfVectorizer(max_df=0.6, min_df=20, lowercase=False, stop_
 tf_idf = tfidf_vectorizer.fit_transform(text)
 
 ## NMF
-# Optimal Model: full dataset, 75 topics, random_state = 14
-# Pandemic Model: pandemic dataset, 30, random_state = 1
-# Coronavirus Model: coronavirus dataset, 30, random_state = 1
-
 num_topics_lst = [20, 50]
 num_run = 10
 n_word = 10
 
-#dsd_res = []
-#ts_res = []
-#nmi_res = []
 stability_res = []
 
 for num_topics in num_topics_lst:
@@ -143,55 +127,7 @@ for num_topics in num_topics_lst:
                           'ADSD': avg_dsd,
                           'ATS': avg_ts,
                           'PNMI': p_nmi})
-    
-    #dsd_res.append({'Top terms': n_word,
-    #                'ADSD': avg_dsd})
-    
-    #ts_res.append({'Top terms': n_word,
-    #               'ATS': avg_ts})
 
-    #nmi_res.append({'Top terms': n_word,
-    #                'PNMI': p_nmi})
-
-#dsd_df = pd.DataFrame(dsd_res)
-#ts_df = pd.DataFrame(ts_res)
-#nmi_df = pd.DataFrame(nmi_res)
 stability_df = pd.DataFrame(stability_res)
 
-#all_meas_df = dsd_df.merge(ts_df, 
-#                           left_on = 'Top terms', 
-#                           right_on = 'Top terms').merge(nmi_df, 
-#                                                         left_on = 'Top terms', 
-#                                                         right_on = 'Top terms')
-#all_meas_df.to_csv('stability_results/full_stability_measures_50_topics.csv', index = False)
 stability_df.to_csv('/project/biocomplexity/sdad/projects_data/ncses/prd/full_stability_measures_paper.csv', index = False)
-
-
-#plt.figure(figsize = (20,5))
-#plt.subplot(2,2,1)
-#plt.plot(dsd_df['Top terms'], dsd_df['ADSD'])
-#plt.title("ADSD")
-#plt.xlabel("Number of top terms for each topic")
-#plt.ylabel("ADSD")
-#axes = plt.gca()
-#axes.set_ylim([0.0,0.5])
-
-#plt.subplot(2,2,2)
-#plt.plot(ts_df['Top terms'], ts_df['ATS'])
-#plt.title("Dataset 2008-2019")
-#plt.xlabel("Number of top terms for each topic")
-#plt.ylabel("ATS")
-#axes = plt.gca()
-#axes.set_ylim([0.0,0.5])
-
-#plt.subplot(2,2,3)
-#plt.plot(nmi_df['Top terms'], nmi_df['PNMI'])
-#plt.title("Dataset 2008-2019")
-#plt.xlabel("Number of top terms for each topic")
-#plt.ylabel("PNMI")
-#axes = plt.gca()
-#axes.set_ylim([0.0,0.5])
-
-#plt.subplots_adjust(wspace=0.3)
-#plt.tight_layout()
-#plt.savefig("figures/full_stability_measures_more_topn.png", dpi = 800)
