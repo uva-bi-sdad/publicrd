@@ -13,7 +13,7 @@ options(scipen=999) # prevent scientific notation for slopes in df
 #
 
 
-df <- read_csv("full_50topics.csv")
+df <- read_csv("full_20topics.csv")
 
 # create table with only labels and topic words
 
@@ -23,7 +23,7 @@ df1 <- df %>%
 # change "_" to "\_" for outputting an actual underscore in TeX and not going into math mode
 df1$`Topic Words` <- gsub("_", "\\\\_", df1$`Topic Words`)
 
-write.table(df1, file = "full-50topics-table.txt", quote = FALSE, sep = " & ", eol = " \\\\ \\hline ", 
+write.table(df1, file = "full-20topics-table.txt", quote = FALSE, sep = " & ", eol = " \\\\ \\hline ", 
             row.names = FALSE)
 
 
