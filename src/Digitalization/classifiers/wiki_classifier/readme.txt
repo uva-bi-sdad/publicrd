@@ -1,0 +1,1 @@
+Work on using the Wiki similarity score to identify a new subset of abstracts to label and on comparing scores when the phrase "big data" is removed from abstracts is located in ../../build_training_set/02_wiki_similarity.ipynb.
